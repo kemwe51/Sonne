@@ -36,6 +36,10 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="bilder/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="alternate icon" href="bilder/favicon-192.png" sizes="192x192" type="image/png">
+<link rel="stylesheet" <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+
 
   <!-- Strukturierte Daten: Restaurant + ReserveAction -->
   <script type="application/ld+json">
@@ -91,6 +95,7 @@
       {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"09:00","closes":"21:00"}
     ]
   }
+
   </script>
 
   <!-- Strukturierte Daten: FAQ -->
@@ -327,7 +332,24 @@ dialog#reserve-modal::backdrop{
 /* lock page scroll while dialog is open */
 body.no-scroll{ overflow: hidden; }
 
+/* --- Reservieren: Wochentags-Übersicht & Status --- */
+.week-legend{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.25rem}
+.day-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .6rem;border-radius:999px;border:1px dashed var(--border);font-size:.85rem;white-space:nowrap}
+.day-chip .hours{font-weight:700}
+.day-chip.closed{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+.day-chip.open{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+.day-chip.today{outline:2px solid rgba(0,0,0,.15)}
+/* Date-Feld rot einfassen, wenn geschlossener Tag gewählt */
+input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4444}
 
+/* Flatpickr: offene/geschlossene Tage einfärben */
+.flatpickr-day.open{background:#f0fdf4;border-color:#bbf7d0;color:#166534}
+.flatpickr-day.closed{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+.flatpickr-day.closed.disabled,
+.flatpickr-day.closed.prevMonthDay,
+.flatpickr-day.closed.nextMonthDay{
+  background:#fef2f2!important;border-color:#fecaca!important;color:#991b1b!important;opacity:1!important
+}
 
   </style>
 </head>
@@ -515,6 +537,10 @@ body.no-scroll{ overflow: hidden; }
           </select>
           <div class="help">Wir zeigen nur verfügbare Zeitfenster.</div>
         </div>
+<div class="f" style="grid-column:1/-1">
+ 
+  <div id="day-status" class="help"></div>
+</div>
 
         <div class="f">
           <label for="res-guests">Personen*</label>
@@ -643,38 +669,69 @@ reserveModal.addEventListener('click', (e)=>{
     });
     document.getElementById('reserve-close').addEventListener('click', ()=>reserveModal.close());
 
-    // Öffnungszeiten / Time-Slots (de-CH)
-    const opening = {
-      0: [], // So=0? In JS: 0=So, 1=Mo ...
-      1: [], // Mo
-      2: [], // Di
-      3: [ ["08:30","13:45"], ["17:30","22:00"] ], // Mi
-      4: [ ["08:30","13:45"], ["17:30","22:00"] ], // Do
-      5: [ ["08:30","13:45"], ["17:30","23:00"] ], // Fr
-      6: [ ["15:30","23:00"] ]                      // Sa
-    };
-    // In JS: 0=So, also Sonntag:
-    opening[0] = [ ["09:00","13:45"], ["17:30","21:00"] ]; // So
 
-    const kitchenCutoffMin = 45; // Küche schliesst 45 Min vor Ende
-    const resDate = document.getElementById('res-date');
-    const resTime = document.getElementById('res-time');
+  // Öffnungszeiten / Time-Slots (de-CH) – automatisch aus #kontakt Tabelle lesen
+  (function(){
+    const resDate   = document.getElementById('res-date');
+    const resTime   = document.getElementById('res-time');
+    const legendEl  = document.getElementById('week-legend');
+    const statusEl  = document.getElementById('day-status');
+    const kitchenCutoffMin = 45; // Küche: 45 Min vor Schluss
 
-    // set min date = heute
+    // 1) Öffnungszeiten aus der Kontakt-Tabelle (#kontakt .hours) parsen
+    //    Mapping: In JS ist 0=So, 1=Mo, ... 6=Sa
+    const deDays = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+    const deToIdx = { 'Montag':1,'Dienstag':2,'Mittwoch':3,'Donnerstag':4,'Freitag':5,'Samstag':6,'Sonntag':0 };
+
+    function parseOpeningFromContact(){
+      const tbl = document.querySelector('#kontakt table.hours tbody');
+      const opening = {0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
+      if(!tbl) return opening;
+
+      [...tbl.querySelectorAll('tr')].forEach(tr=>{
+        const day = tr.querySelector('th')?.textContent.trim();
+        const raw = tr.querySelector('td')?.textContent.trim() || '';
+        const idx = deToIdx[day];
+        if(idx == null) return;
+
+        if(/ruhetag/i.test(raw)){
+          opening[idx] = [];
+        }else{
+          // Split bei "•" und akzeptiere "–" oder "-" als Bereichstrenner
+          const parts = raw.split('•').map(s=>s.trim()).filter(Boolean);
+          opening[idx] = parts.map(p=>{
+            const seg = p.replace(/\s/g,'');           // "08:30–13:45"
+            const [a,b] = seg.split(/[–-]/);           // Start/Ende
+            return [fmtHM(a), fmtHM(b)];
+          });
+        }
+      });
+
+      return opening;
+
+      function fmtHM(x){
+        // normalisiere "8:30" -> "08:30"
+        const m = String(x).match(/^(\d{1,2}):(\d{2})$/);
+        if(!m) return x;
+        return `${m[1].padStart(2,'0')}:${m[2]}`;
+      }
+    }
+
+    const opening = parseOpeningFromContact();
+
+    // 2) Helpers
+    // min Datum = heute
     const today = new Date();
     resDate.min = today.toISOString().slice(0,10);
 
-    // Helper: add minutes to HH:MM
     function addMin(hm, m){
       const [h,mi] = hm.split(':').map(Number);
       const d = new Date(2000,0,1,h,mi+m,0);
       return d.toTimeString().slice(0,5);
     }
-    // Generate slots every 15'
     function genSlots(ranges){
       const slots = [];
       ranges.forEach(([start,end])=>{
-        // Endzeit kürzen um kitchenCutoff
         const endCut = addMin(end, -kitchenCutoffMin);
         let t = start;
         while(t <= endCut){
@@ -684,32 +741,83 @@ reserveModal.addEventListener('click', (e)=>{
       });
       return slots;
     }
+    function fmtRanges(ranges){
+      if(!ranges.length) return 'Ruhetag';
+      return ranges.map(([s,e])=>`${s}–${e}`).join(' · ');
+    }
 
+    // 3) Wochentags-Übersicht im Modal aufbauen (geschlossen = rot)
+    function buildWeekLegend(selectedDateStr){
+      if(!legendEl) return;
+      legendEl.innerHTML = '';
+      const selected = selectedDateStr ? new Date(selectedDateStr+'T12:00:00') : null;
+      const selDow = selected ? selected.getDay() : null;
+      const isToday = (i)=> i === (new Date()).getDay();
+
+      // Reihenfolge Mo->So wie im DACH-Raum üblich
+      const order = [1,2,3,4,5,6,0];
+      order.forEach(i=>{
+        const chip = document.createElement('span');
+        const isClosed = !opening[i] || opening[i].length === 0;
+        chip.className = `day-chip ${isClosed?'closed':'open'} ${selDow===i?'today':''}`;
+        chip.innerHTML = `<strong>${deDays[i]}</strong> <span class="hours">${fmtRanges(opening[i]||[])}</span>`;
+        if(isToday(i)) chip.title = 'Heute';
+        legendEl.appendChild(chip);
+      });
+    }
+
+    // 4) Zeiten füllen + Statushinweis setzen
     function fillTimesFor(dateStr){
       resTime.innerHTML = '';
-      const d = new Date(dateStr + 'T12:00:00'); // midday to avoid TZ issues
+      const d = new Date(dateStr + 'T12:00:00'); // TZ-sicher
       if(isNaN(d)) return;
       const dow = d.getDay(); // 0=So
       const ranges = opening[dow] || [];
+
+      // Status unten anzeigen
+      if(!statusEl) return;
+      const nice = d.toLocaleDateString('de-CH', { weekday:'long', day:'2-digit', month:'2-digit', year:'numeric' });
       if(!ranges.length){
+        statusEl.innerHTML = `<span class="note-bad">Geschlossen am ${nice} – bitte anderes Datum wählen.</span>`;
+        resDate.classList.add('is-closed');
         const opt = new Option('Geschlossen – bitte anderes Datum wählen', '');
         opt.disabled = true; opt.selected = true;
         resTime.add(opt);
-        return;
+      }else{
+        statusEl.innerHTML = `<span class="note-ok">Geöffnet am ${nice}: ${fmtRanges(ranges)}</span>`;
+        resDate.classList.remove('is-closed');
+        const slots = genSlots(ranges);
+        if(!slots.length){
+          const opt = new Option('Keine Zeiten verfügbar', '');
+          opt.disabled = true; opt.selected = true;
+          resTime.add(opt);
+        }else{
+          resTime.add(new Option('Uhrzeit wählen', '', true, true));
+          resTime.options[0].disabled = true;
+          slots.forEach(t => resTime.add(new Option(t, t)));
+        }
       }
-      const slots = genSlots(ranges);
-      if(!slots.length){
-        const opt = new Option('Keine Zeiten verfügbar', '');
-        opt.disabled = true; opt.selected = true;
-        resTime.add(opt);
-        return;
-      }
-      resTime.add(new Option('Uhrzeit wählen', '', true, true));
-      resTime.options[0].disabled = true;
-      slots.forEach(t => resTime.add(new Option(t, t)));
+
+      // Legende mit Selektion neu zeichnen
+      buildWeekLegend(dateStr);
     }
 
+    // Initial: Legende zeigen (ohne Auswahl) + heute vorwählen, falls offen
+    buildWeekLegend();
+    (function preselectToday(){
+      const iso = new Date().toISOString().slice(0,10);
+      resDate.value = iso;
+      fillTimesFor(iso);
+    })();
+
+    // Reaktion auf Datum
     resDate.addEventListener('change', e => fillTimesFor(e.target.value));
+    window.opening = opening;
+    window.fillTimesFor = fillTimesFor;
+    window.buildWeekLegend = buildWeekLegend;
+  })();
+
+
 
     // Form utils
     const form = document.getElementById('reserve-form');
@@ -835,6 +943,7 @@ reserveModal.addEventListener('click', (e)=>{
       mq.addEventListener('change', toggle); toggle();
     })();
 
+
 document.addEventListener("DOMContentLoaded", () => {
   const dlg   = document.getElementById("pdf-modal");
   const frame = document.getElementById("pdf-frame");
@@ -886,6 +995,65 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+</script>
+<script>
+(function(){
+  const resDate = document.getElementById('res-date');
+  if (!resDate || typeof flatpickr === 'undefined') return;
+
+  // Sicherstellen, dass Öffnungszeiten vorhanden sind
+  const opening = window.opening || {0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
+
+  function isOpenDate(date){
+    const dow = date.getDay(); // 0=So..6=Sa
+    const ranges = opening[dow] || [];
+    return ranges.length > 0;
+  }
+
+  const fp = flatpickr(resDate, {
+  disableMobile: true,         // <— erzwingt Flatpickr UI
+
+    altInput: true,
+    altFormat: "d.m.Y",
+    dateFormat: "Y-m-d",
+    minDate: "today",
+    // ✅ Deutsch aktivieren (wir haben de.js geladen)
+    locale: 'de',
+    // ❗ Auswählen an geschlossenen Tagen verhindern? -> 'disable' drin lassen,
+    // sonst diesen Block entfernen
+    disable: [
+      function(date){ return !isOpenDate(date); }
+    ],
+    onDayCreate: function(dObj, dStr, fp, dayElem){
+      const date = dayElem.dateObj;
+      if (isOpenDate(date)) {
+        dayElem.classList.add('open');
+      } else {
+        dayElem.classList.add('closed');
+      }
+    },
+    onChange: function(selectedDates, dateStr){
+      if(dateStr && typeof window.fillTimesFor === 'function'){
+        window.fillTimesFor(dateStr);
+      }
+    },
+    onReady: function(selectedDates, dateStr){
+      const initial = dateStr || new Date().toISOString().slice(0,10);
+      if (typeof window.buildWeekLegend === 'function'){
+        window.buildWeekLegend(initial);
+      }
+    }
+  });
+
+  // Wenn Datum anderweitig gesetzt wird, Flatpickr synchron halten
+  resDate.addEventListener('change', e => {
+    const v = e.target.value;
+    if (v && fp.selectedDates?.[0]?.toISOString().slice(0,10) !== v) {
+      fp.setDate(v, true);
+    }
+  });
+})();
 </script>
 
   <script async src="//www.instagram.com/embed.js"></script>

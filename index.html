@@ -33,7 +33,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
   <!-- Favicons -->
-  <link rel="icon" href="bilder/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="bilder/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="alternate icon" href="bilder/favicon-192.png" sizes="192x192" type="image/png">
 
@@ -47,7 +47,7 @@
     "url":"https://www.xn--sonne-klliken-omb.ch/",
     "image":["sonne-hero.jpg","sonne-ambiente.jpg","sonne-kinderecke.jpg"],
     "telephone":"+41 62 723 19 15",
-    "email":"info@xn--sonne-klliken-omb.ch",
+    "email":"info@sonne-kölliken.ch",
     "servesCuisine":["Schweizerisch","Burger","Cordon bleu","Frühstück"],
     "priceRange":"CHF",
     "address":{
@@ -289,7 +289,7 @@ dialog#reserve-modal::backdrop{
   <header>
     <div class="wrap sitebar" role="navigation" aria-label="Hauptnavigation">
       <a class="brand" href="#home">
-        <span class="logo" aria-hidden="true"><img src="bilder/favicon.svg" alt="" width="40" height="40" decoding="async"></span>
+        <span class="logo" aria-hidden="true"><img src="favicon.svg" alt="" width="40" height="40" decoding="async"></span>
         <span class="brand-text">Restaurant Sonne Kölliken</span>
       </a>
       <nav>
@@ -747,7 +747,7 @@ reserveModal.addEventListener('click', (e)=>{
       }
 
       // 2) Fallback: Mailto
-      const to = 'info@xn--sonne-klliken-omb.ch';
+      const to = 'info@sonne-kölliken.ch';
       const subj = encodeURIComponent('Tischreservierung');
       const mailBody = encodeURIComponent(body);
       window.location.href = `mailto:${to}?subject=${subj}&body=${mailBody}`;
@@ -768,7 +768,7 @@ reserveModal.addEventListener('click', (e)=>{
     document.getElementById('send-email').addEventListener('click', ()=>{
       if(!validate()) return;
       const d = getFormData();
-      const to = 'info@xn--sonne-klliken-omb.ch';
+      const to = 'info@sonne-kölliken.ch';
       const subj = encodeURIComponent('Tischreservierung');
       const body = encodeURIComponent(messageText(d));
       window.location.href = `mailto:${to}?subject=${subj}&body=${body}`;

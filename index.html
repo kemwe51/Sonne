@@ -289,22 +289,45 @@ dialog#reserve-modal::backdrop{
   object-position: center;
   display: block;
 }
-#pdf-modal {
-  width: min(100vw, 900px);
-  border: none;
+/* PDF dialog: edge-to-edge, no chrome */
+#pdf-modal{
+  position: fixed;
+  inset: 0;
+  margin: 0;
   padding: 0;
+  border: none;
+  background: transparent;
+  max-width: none;
+  max-height: none;
 }
-#pdf-modal .modal-head{
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-}
+#pdf-modal::backdrop{ background: transparent; }
+
+/* iframe fills the whole viewport */
 #pdf-frame{
-  display:block;
-  width:100%;
-  height: calc(100vh - 160px); /* bei Bedarf anpassen */
-  border:0;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  border: 0;
+  display: block;
 }
+
+/* optional: small round close button */
+#pdf-close-fab{
+  position: fixed;
+  top: 12px; right: 12px;
+  width: 36px; height: 36px;
+  border: 0; border-radius: 9999px;
+  background: rgba(0,0,0,.35);
+  color: #fff; font: 700 20px/36px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  cursor: pointer; opacity: .7;
+}
+#pdf-close-fab:hover{ opacity: 1; }
+
+/* lock page scroll while dialog is open */
+body.no-scroll{ overflow: hidden; }
+
+
 
   </style>
 </head>
@@ -461,14 +484,13 @@ dialog#reserve-modal::backdrop{
       </div>
     </section>
 
-    <!-- PDF-Dialog -->
-    <dialog id="pdf-modal" aria-labelledby="pdf-modal-title" aria-modal="true">
-      <div class="modal-head">
-        <strong id="pdf-modal-title">Dokument</strong>
-        <button id="pdf-close" aria-label="Schliessen">×</button>
-      </div>
-      <iframe id="pdf-frame" src="" title="Speisekarte PDF" loading="lazy"></iframe>
-    </dialog>
+<!-- PDF-Dialog -->
+<dialog id="pdf-modal" aria-modal="true">
+  <iframe id="pdf-frame" title="Speisekarte PDF" loading="lazy"></iframe>
+  <button id="pdf-close-fab" aria-label="Schliessen">×</button>
+</dialog>
+
+
 
     <!-- Reservierungs-Dialog (Liquid Glass) -->
 <dialog id="reserve-modal" aria-labelledby="reserve-title" aria-modal="true">
@@ -585,11 +607,12 @@ dialog#reserve-modal::backdrop{
     (function(){
       const dlg = document.getElementById('pdf-modal');
       const frame = document.getElementById('pdf-frame');
-      const close = document.getElementById('pdf-close');
+      const close = document.getElementById('pdf-close-fab');
+
       document.querySelectorAll('.menu-btn').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const pdf = btn.getAttribute('data-pdf');
-          document.getElementById('pdf-modal-title').textContent = btn.textContent.trim();
+        
           frame.src = pdf + '#view=FitH';
           dlg.showModal();
         });
@@ -812,37 +835,59 @@ reserveModal.addEventListener('click', (e)=>{
       mq.addEventListener('change', toggle); toggle();
     })();
 
-  // Hilfsfunktion: hängt die PDF-Viewer-Parameter an (oder überschreibt bestehende)
-  function withPdfViewerParams(url) {
-    const [base, hash = ""] = url.split("#");
-    const hp = new URLSearchParams(hash);
-    hp.set("toolbar", "0");
-    hp.set("navpanes", "0");
-    hp.set("scrollbar", "0");
-    return base + "#" + hp.toString();
+document.addEventListener("DOMContentLoaded", () => {
+  const dlg   = document.getElementById("pdf-modal");
+  const frame = document.getElementById("pdf-frame");
+  const close = document.getElementById("pdf-close-fab"); // oder null, wenn nicht vorhanden
+  if (!dlg || !frame) return;
+
+  // PDF-URL mit "clean view" + Zoom
+  function buildPdfUrl(url){
+    const [base, hash=""] = String(url).split("#");
+    const p = new URLSearchParams(hash);
+    p.set("toolbar","0");
+    p.set("navpanes","0");
+    p.set("scrollbar","0");
+    p.set("zoom","90");     // Alternative: "page-width" oder "75"
+    return base + "#" + p.toString();
   }
 
-  // Beispiel: falls du irgendwo die PDF-URL setzt, dann so:
-  // document.getElementById("pdf-frame").src = withPdfViewerParams("Speisekarte_Sommer.pdf");
-
-  // Optional: Klick-Handler für Links mit data-pdf (falls du so arbeitest)
+  // Öffnen: unterstützt .menu-btn **oder** beliebige [data-pdf]-Trigger
   document.addEventListener("click", (e) => {
-    const a = e.target.closest("[data-pdf]");
-    if (!a) return;
+    const trigger = e.target.closest("[data-pdf], .menu-btn");
+    if (!trigger) return;
+
     e.preventDefault();
-    const url = a.getAttribute("data-pdf");
-    const frame = document.getElementById("pdf-frame");
-    frame.src = withPdfViewerParams(url);
-    document.getElementById("pdf-modal").showModal?.();
+    const pdf = trigger.getAttribute("data-pdf") || trigger.getAttribute("href");
+    if (!pdf) return;
+
+    frame.src = buildPdfUrl(pdf);
+    dlg.showModal();
+    document.body.classList.add("no-scroll");   // Hintergrund-Scroll sperren
   });
 
-  // Schliessen-Button
-  document.getElementById("pdf-close")?.addEventListener("click", () => {
-    const dlg = document.getElementById("pdf-modal");
-    dlg.close?.();
-    document.getElementById("pdf-frame").src = "";
+  // Schliessen über Button (falls vorhanden)
+  if (close){
+    close.addEventListener("click", () => {
+      frame.src = "";
+      dlg.close();
+      document.body.classList.remove("no-scroll");
+    });
+  }
+
+  // Klick ausserhalb des Dialogs schliesst (optional)
+  dlg.addEventListener("click", (e) => {
+    const r = dlg.getBoundingClientRect();
+    const outside = e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+    if (outside){
+      frame.src = "";
+      dlg.close();
+      document.body.classList.remove("no-scroll");
+    }
   });
-  </script>
+});
+</script>
+
   <script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>

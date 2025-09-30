@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="format-detection" content="telephone=yes">
   <meta name="theme-color" content="#F7C948">
 
@@ -352,6 +352,78 @@ input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4
   background:#fef2f2!important;border-color:#fecaca!important;color:#991b1b!important;opacity:1!important
 }
 .flatpickr-calendar{ z-index: 100000; }
+/* --- Reservierungs-Wizard (Step-by-Step) --- */
+.wizard-steps{display:flex;gap:.5rem;align-items:center;margin:0 0 .75rem 0;padding:0;list-style:none}
+.wizard-steps .step-dot{
+  width:30px;height:30px;border-radius:999px;display:grid;place-items:center;
+  font-weight:800;border:2px solid var(--border);background:#fff;color:#111
+}
+.wizard-steps .step-dot.current{background:#111;color:#fff;border-color:#111}
+.wizard-steps .step-dot.done{background:var(--brand);border-color:var(--brand);color:#111}
+.step-panel{display:none;animation:fadeIn .18s ease}
+.step-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.nav-row{display:flex;gap:.6rem;justify-content:flex-end;margin-top:.75rem;flex-wrap:wrap}
+.summary-card{
+  background:#fff;border:1px solid var(--border);border-radius:12px;padding:.8rem;box-shadow:var(--shadow);
+  font-size:.95rem;display:none
+}
+.summary-card dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:.35rem .8rem}
+.summary-card dt{font-weight:700}
+.summary-card dd{margin:0}
+/* Flatpickr über dem Modal/Backdrop halten */
+.flatpickr-calendar { z-index: 100001 !important; }
+/* ein-/ausblenden für bedingte Felder */
+.hide{display:none !important;}
+:root {
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Header sticky + mobile Nav-Schalter */
+header{position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid #e2e8f0;z-index:50}
+.icon-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;color:#111;font-weight:800}
+
+/* Baseline Typografie auf Mobil */
+h1{font-size:clamp(1.8rem, 5.5vw, 3rem);line-height:1.15}
+.lead{font-size:clamp(1rem, 3.8vw, 1.125rem)}
+
+/* Grids einkolumnig auf Mobil */
+@media (max-width:980px){
+  .hero{padding:2rem 0 1rem}
+  .hero-grid,.grid-3,.grid-2,.menu-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+  nav ul{display:none}
+  .icon-btn{display:inline-flex}
+}
+
+/* Drawer Navigation (Mobil) */
+.drawer-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.42);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:60}
+.drawer-backdrop.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(86vw,360px);background:#fff;border-left:1px solid #e2e8f0;box-shadow:-10px 0 30px rgba(2,6,23,.08);transform:translateX(100%);transition:transform .25s ease;z-index:61;display:flex;flex-direction:column}
+.drawer.show{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #e2e8f0}
+.mobile-nav{list-style:none;margin:0;padding:0}
+.mobile-nav a{display:block;padding:1rem 1.25rem;border-bottom:1px solid #e2e8f0;color:#111;font-weight:700;text-decoration:none}
+.mobile-nav a:hover{background:#fffef8}
+
+/* Bottom Action Bar (nur kleine Screens) */
+.mobile-bar{position:fixed;left:0;right:0;bottom:0;padding:.5rem 12px calc(.5rem + var(--safe-bottom));background:rgba(255,255,255,.98);border-top:1px solid #e2e8f0;display:none;gap:.5rem;z-index:55}
+.bar-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;padding:0.9rem 1rem;border-radius:999px;border:1px solid #e2e8f0;background:#fff;font-weight:800;text-decoration:none;min-height:48px}
+.bar-btn.primary{background:#111;color:#fff;border-color:#111}
+@media (max-width:740px){ .mobile-bar{display:flex} }
+
+/* Große Tap-Targets allgemein */
+a.button, .cta, button, .menu-btn { min-height:48px; padding:.85rem 1rem; border-radius:12px }
+
+/* Galerie-Kacheln, die auf Mobil gut laden */
+#galerie .grid-3 img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border-radius:12px}
+
+/* PDF-Dialog als Fullscreen (komfortabel auf Handy) */
+#pdf-modal{position:fixed;inset:0;margin:0;padding:0;border:0;background:transparent;max-width:none;max-height:none}
+#pdf-modal::backdrop{background:transparent}
+#pdf-frame{position:fixed;inset:0;width:100vw;height:100vh;border:0;display:block}
+#pdf-close-fab{position:fixed;top:12px;right:12px;width:36px;height:36px;border:0;border-radius:9999px;background:rgba(0,0,0,.35);color:#fff;font:700 20px/36px system-ui;cursor:pointer;opacity:.7}
+#pdf-close-fab:hover{opacity:1}
+body.no-scroll{overflow:hidden}
 
   </style>
 </head>
@@ -525,95 +597,164 @@ input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4
     </div>
 
     <form id="reserve-form" class="reserve-body" novalidate>
-      <div class="reserve-grid">
-        <div class="f">
-          <label for="res-date">Datum*</label>
-          <input id="res-date" name="date" type="text" required inputmode="numeric" autocomplete="off">
+  <!-- Fortschritt -->
+  <ol class="wizard-steps" id="wizard-steps" aria-label="Reservierungsschritte">
+    <li class="step-dot current" aria-current="step">1</li>
+    <li class="step-dot">2</li>
+    <li class="step-dot">3</li>
+    <li class="step-dot">4</li>
+    <li class="step-dot">5</li>
+  </ol>
 
-          <div class="help">Montag & Dienstag geschlossen</div>
-        </div>
+  <!-- STEP 1: Datum -->
+  <div class="step-panel active" data-step="0" role="group" aria-labelledby="step1-title">
+    <h3 id="step1-title" class="section-title" style="font-size:1.15rem;margin:.25rem 0 .5rem">1) Datum wählen</h3>
+    <div class="reserve-grid">
+      <div class="f">
+        <label for="res-date">Datum*</label>
+        <input id="res-date" name="date" type="text" required inputmode="numeric" autocomplete="off">
+        <div class="help">Montag & Dienstag geschlossen</div>
+      </div>
+      <div class="f" style="grid-column:1/-1">
+        <div id="week-legend" class="week-legend" aria-label="Wochenübersicht"></div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button type="button" class="cta" data-next disabled>Weiter</button>
+    </div>
+  </div>
 
-        <div class="f">
-          <label for="res-time">Uhrzeit*</label>
-          <select id="res-time" name="time" required>
-            <option value="" disabled selected>Bitte Datum wählen</option>
-          </select>
-          <div class="help">Wir zeigen nur verfügbare Zeitfenster.</div>
-        </div>
+  <!-- STEP 2: Uhrzeit -->
+  <div class="step-panel" data-step="1" role="group" aria-labelledby="step2-title">
+    <h3 id="step2-title" class="section-title" style="font-size:1.15rem;margin:.25rem 0 .5rem">2) Uhrzeit wählen</h3>
+    <div class="reserve-grid">
+      <div class="f">
+        <label for="res-time">Uhrzeit*</label>
+        <select id="res-time" name="time" required>
+          <option value="" disabled selected>Bitte Datum wählen</option>
+        </select>
+        <div class="help">Es werden nur verfügbare Zeitfenster angezeigt.</div>
+      </div>
+      <div class="f" style="grid-column:1/-1">
+        <div id="day-status" class="help"></div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button type="button" class="cta secondary" data-prev>Zurück</button>
+      <button type="button" class="cta" data-next disabled>Weiter</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Personen/Kinder -->
+  <div class="step-panel" data-step="2" role="group" aria-labelledby="step3-title">
+    <h3 id="step3-title" class="section-title" style="font-size:1.15rem;margin:.25rem 0 .5rem">3) Gäste</h3>
+    <div class="reserve-grid">
+      <div class="f">
+        <label for="res-guests">Personen*</label>
+        <select id="res-guests" name="guests" required>
+          <option value="" disabled selected>Anzahl auswählen</option>
+          <option>1</option><option>2</option><option>3</option><option>4</option>
+          <option>5</option><option>6</option><option>7</option><option>8</option>
+          <option>9</option><option>10+</option>
+        </select>
+      </div>
+      <div class="f">
+        <label for="res-children">Kinder</label>
+        <select id="res-children" name="children">
+          <option>0</option><option>1</option><option>2</option><option>3</option>
+          <option>4</option><option>5+</option>
+        </select>
+      </div>
+      <div id="highchair-wrap" class="f hide">
+  <label for="res-highchairs">Hochstühle</label>
+  <select id="res-highchairs" name="highchairs">
+    <option>0</option><option>1</option><option>2</option><option>3</option>
+  </select>
+ </div>
+
+    </div>
+    <div class="nav-row">
+      <button type="button" class="cta secondary" data-prev>Zurück</button>
+      <button type="button" class="cta" data-next disabled>Weiter</button>
+    </div>
+  </div>
+
+
+  <!-- STEP 4: Kontakt & Wünsche -->
+  <div class="step-panel" data-step="3" role="group" aria-labelledby="step4-title">
+    <h3 id="step4-title" class="section-title" style="font-size:1.15rem;margin:.25rem 0 .5rem">4) Kontakt & Wünsche</h3>
+    <div class="reserve-grid">
+      <div class="f">
+        <label for="res-name">Name*</label>
+        <input id="res-name" name="name" type="text" required autocomplete="name" placeholder="Name">
+      </div>
 <div class="f" style="grid-column:1/-1">
- 
-  <div id="day-status" class="help"></div>
+  <label>Bevorzugte Kontaktart*</label>
+  <div class="chips" id="contact-type">
+    <label class="chip"><input type="radio" name="contactType" value="phone" required style="accent-color:#111"> Telefon</label>
+    <label class="chip"><input type="radio" name="contactType" value="email" required style="accent-color:#111"> E-Mail</label>
+  </div>
 </div>
 
-        <div class="f">
-          <label for="res-guests">Personen*</label>
-          <select id="res-guests" name="guests" required>
-            <option value="" disabled selected>Anzahl auswählen</option>
-            <option>1</option><option>2</option><option>3</option><option>4</option>
-            <option>5</option><option>6</option><option>7</option><option>8</option>
-            <option>9</option><option>10+</option>
-          </select>
-        </div>
+<div id="contact-phone" class="f hide">
+  <label for="res-phone">Telefon*</label>
+  <input id="res-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+41 …">
+</div>
 
-        <div class="f">
-          <label for="res-children">Kinder</label>
-          <select id="res-children" name="children">
-            <option>0</option><option>1</option><option>2</option><option>3</option>
-            <option>4</option><option>5+</option>
-          </select>
-        </div>
+<div id="contact-email" class="f hide">
+  <label for="res-email">E-Mail*</label>
+  <input id="res-email" name="email" type="email" autocomplete="email" placeholder="name@example.ch">
+</div>
 
-        <div class="f">
-          <label for="res-highchairs">Hochstühle</label>
-          <select id="res-highchairs" name="highchairs">
-            <option>0</option><option>1</option><option>2</option><option>3</option>
-          </select>
-          <div class="help">Wir reservieren gerne Hochstühle für euch.</div>
-        </div>
-
-        <div class="f">
-          <label for="res-name">Name*</label>
-          <input id="res-name" name="name" type="text" required autocomplete="name" placeholder="Vor- und Nachname">
-        </div>
-
-        <div class="f">
-          <label for="res-phone">Telefon*</label>
-          <input id="res-phone" name="phone" type="tel" required inputmode="tel" autocomplete="tel" placeholder="+41 ...">
-        </div>
-
-        <div class="f">
-          <label for="res-email">E-Mail</label>
-          <input id="res-email" name="email" type="email" autocomplete="email" placeholder="name@example.ch">
-        </div>
-
-        <div class="f" style="grid-column:1/-1">
-          <label for="res-notes">Bemerkungen</label>
-          <textarea id="res-notes" name="notes" rows="3" placeholder="z. B. Kinderwagen, Allergien, ruhiger Tisch, Terrasse, Kindergeburtstag …"></textarea>
-        </div>
-
-        <div class="f" style="grid-column:1/-1">
-          <label for="res-preferences">Präferenzen</label>
-          <div class="chips" id="res-preferences">
-            <label class="chip"><input type="checkbox" name="pref" value="Terrasse" style="accent-color:#111"> Terrasse</label>
-            <label class="chip"><input type="checkbox" name="pref" value="Ruhig" style="accent-color:#111"> Ruhig</label>
-            <label class="chip"><input type="checkbox" name="pref" value="Nähe Kinderecke" style="accent-color:#111"> Nähe Kinderecke</label>
-          </div>
-          <div class="help">Wir versuchen Wünsche nach Möglichkeit zu erfüllen.</div>
-        </div>
-
-        <div class="f" style="grid-column:1/-1">
-          <label class="tos"><input type="checkbox" id="res-privacy" required style="accent-color:#111"> Ich akzeptiere die Verarbeitung meiner Angaben zur Tischreservierung gemäss <a href="Datenschutz.html" target="_blank" rel="noopener">Datenschutz</a>. *</label>
-        </div>
+      <div class="f" style="grid-column:1/-1">
+        <label for="res-notes">Bemerkungen</label>
+        <textarea id="res-notes" name="notes" rows="3" placeholder="z. B. Kinderwagen, Allergien, ruhiger Tisch, Terrasse, Kindergeburtstag …"></textarea>
       </div>
-
-      <div class="actions" style="margin-top:1rem">
-        <button type="submit" class="cta" id="send-default">Verbindlich anfragen</button>
-        <button type="button" class="cta secondary" id="send-whatsapp">Per WhatsApp senden</button>
-        <button type="button" class="cta secondary" id="send-email">Per E-Mail senden</button>
+      <div class="f" style="grid-column:1/-1">
+        <label>Präferenzen</label>
+        <div class="chips" id="res-preferences">
+          <label class="chip"><input type="checkbox" name="pref" value="Terrasse" style="accent-color:#111"> Terrasse</label>
+          <label class="chip"><input type="checkbox" name="pref" value="Ruhig" style="accent-color:#111"> Ruhig</label>
+          <label class="chip"><input type="checkbox" name="pref" value="Nähe Kinderecke" style="accent-color:#111"> Nähe Kinderecke</label>
+        </div>
+        <div class="help">Wir versuchen Wünsche nach Möglichkeit zu erfüllen.</div>
       </div>
-      <p class="help" id="res-feedback" aria-live="polite" style="margin-top:.5rem"></p>
-      <p class="help">Sofortige Fragen? Ruf uns an: <a href="tel:+41627231915">+41 62 723 19 15</a></p>
-    </form>
+      <div class="f" style="grid-column:1/-1">
+        <label class="tos"><input type="checkbox" id="res-privacy" required style="accent-color:#111"> Ich akzeptiere die Verarbeitung meiner Angaben zur Tischreservierung gemäss <a href="Datenschutz.html" target="_blank" rel="noopener">Datenschutz</a>. *</label>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button type="button" class="cta secondary" data-prev>Zurück</button>
+      <button type="button" class="cta" data-next disabled>Weiter</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Zusammenfassung & Absenden -->
+  <div class="step-panel" data-step="4" role="group" aria-labelledby="step5-title">
+    <h3 id="step5-title" class="section-title" style="font-size:1.15rem;margin:.25rem 0 .5rem">5) Prüfen & senden</h3>
+    <div id="res-summary" class="summary-card" aria-live="polite">
+      <dl>
+        <dt>Datum</dt><dd>–</dd>
+        <dt>Uhrzeit</dt><dd>–</dd>
+        <dt>Personen</dt><dd>–</dd>
+        <dt>Kontakt</dt><dd>–</dd>
+        <dt>Präferenzen</dt><dd>–</dd>
+        <dt>Bemerkungen</dt><dd>–</dd>
+      </dl>
+    </div>
+
+    <div class="actions" style="margin-top:1rem;display:none">
+      <button type="submit" class="cta" id="send-default">Reservieren</button>
+      </div>
+    <p class="help" id="res-feedback" aria-live="polite" style="margin-top:.5rem"></p>
+    <p class="help">Sofortige Fragen? Ruf uns an: <a href="tel:+41627231915">+41 62 723 19 15</a></p>
+
+    <div class="nav-row">
+      <button type="button" class="cta secondary" data-prev>Zurück</button>
+    </div>
+  </div>
+</form>
+
   </div>
 </dialog>
 
@@ -621,7 +762,7 @@ input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4
 
   <footer>
     <div class="wrap">
-      <small>&copy; <span id="year"></span> Restaurant Sonne, Kölliken · <a href="/datenschutz">Datenschutz</a></small>
+      <small>&copy; <span id="year"></span> Restaurant Sonne, Kölliken · <a href="Datenschutz">Datenschutz</a></small>
     </div>
   </footer>
 
@@ -913,26 +1054,7 @@ reserveModal.addEventListener('click', (e)=>{
       showToast('E-Mail Entwurf geöffnet – bitte absenden.');
     });
 
-    // WhatsApp
-    document.getElementById('send-whatsapp').addEventListener('click', ()=>{
-      if(!validate()) return;
-      const d = getFormData();
-      const text = encodeURIComponent(messageText(d));
-      const phoneCH = '41627231915'; // +41 62 723 19 15 -> 41627231915
-      window.open(`https://wa.me/${phoneCH}?text=${text}`, '_blank');
-      showToast('WhatsApp geöffnet – Nachricht senden.');
-    });
-
-    // E-Mail Direkt
-    document.getElementById('send-email').addEventListener('click', ()=>{
-      if(!validate()) return;
-      const d = getFormData();
-      const to = 'info@sonne-kölliken.ch';
-      const subj = encodeURIComponent('Tischreservierung');
-      const body = encodeURIComponent(messageText(d));
-      window.location.href = `mailto:${to}?subject=${subj}&body=${body}`;
-      showToast('E-Mail Entwurf geöffnet – bitte absenden.');
-    });
+ 
 
     // Floating CTA für Mobile (optional, hier aktiviert falls gewünscht)
     (function(){
@@ -1016,7 +1138,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const isOpenDate = d => (opening[d.getDay()]||[]).length > 0;
 
   const fp = flatpickr(resDate, {
-    appendTo: reserveModal,   // <<< WICHTIG
+   static: true,
+appendTo: document.getElementById('reserve-form'),
+
     disableMobile: true,
     altInput: true,
     altFormat: "d.m.Y",
@@ -1035,6 +1159,236 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 })();
+</script>
+<script>
+(function(){
+  const form = document.getElementById('reserve-form');
+  if(!form) return;
+
+  const panels = [...form.querySelectorAll('.step-panel')];
+  const dots   = [...form.querySelectorAll('.wizard-steps .step-dot')];
+
+  const resDate = document.getElementById('res-date');
+  const resTime = document.getElementById('res-time');
+  const resGuests = document.getElementById('res-guests');
+  const resName  = document.getElementById('res-name');
+  const resPhone = document.getElementById('res-phone');
+  const resPrivacy = document.getElementById('res-privacy');
+
+  let idx = 0;
+
+  function show(i){
+    panels.forEach((p,pi)=>p.classList.toggle('active', pi===i));
+    dots.forEach((d,pi)=>{
+      d.classList.toggle('current', pi===i);
+      d.classList.toggle('done', pi<i);
+      d.removeAttribute('aria-current');
+      if(pi===i) d.setAttribute('aria-current','step');
+    });
+    toggleFinal(i===panels.length-1);
+    updateSummary();
+    updateNextEnabled(); // set state for current step
+  }
+
+  function toggleFinal(isFinal){
+    const actions = form.querySelector('.actions');
+    const summary = document.getElementById('res-summary');
+    if(actions) actions.style.display = isFinal ? 'flex':'none';
+    if(summary) summary.style.display = isFinal ? 'block':'none';
+  }
+
+function validateStep(i){
+  const emailInput = document.getElementById('res-email');
+  const contactSel = form.querySelector('input[name="contactType"]:checked')?.value;
+
+  switch(i){
+    case 0: return !!resDate.value;
+    case 1: return !!resTime.value;
+    case 2: return !!resGuests.value;
+    case 3: {
+      const hasName  = resName.value.trim().length > 0;
+      const needPhone = contactSel === 'phone';
+      const needEmail = contactSel === 'email';
+      const hasPhone = !needPhone || resPhone.value.trim().length > 0;
+      const hasEmail = !needEmail || (emailInput && emailInput.value.trim().length > 0);
+      return hasName && hasPhone && hasEmail && resPrivacy.checked;
+    }
+    default: return true;
+  }
+}
+
+
+  function updateNextEnabled(){
+    const nextBtn = panels[idx].querySelector('[data-next]');
+    if(!nextBtn) return;
+    nextBtn.disabled = !validateStep(idx);
+  }
+
+// ⬇️ HILFSFUNKTIONEN (oberhalb von updateSummary einfügen)
+function formatDateCH(iso){
+  if(!iso) return '–';
+  // TZ-sicher parsen
+  const d = new Date(String(iso) + 'T12:00:00');
+  if (isNaN(d)) return iso;
+  return d.toLocaleDateString('de-CH'); // z.B. 01.10.2025
+}
+
+function personsLine(d){
+  const g = parseInt(d.guests || '0', 10) || 0;
+
+  // "5+" etc. robust behandeln
+  const kidsRaw = String(d.children || '0').replace('+','');
+  const k = parseInt(kidsRaw, 10) || 0;
+
+  const h = parseInt(d.highchairs || '0', 10) || 0;
+
+  // Grundgerüst: "2" bzw. "2 + 1 Kind" / "2 + 2 Kinder"
+  const parts = [String(g)];
+  if (k > 0) {
+    parts.push(`+ ${k} ${k === 1 ? 'Kind' : 'Kinder'}`);
+    if (h > 0) {
+      parts.push(`mit ${h} ${h === 1 ? 'Hochstuhl' : 'Hochstühle'}`);
+    }
+  }
+  return parts.join(' ');
+}
+
+// ⬇️ ERSETZE DEINE bestehende updateSummary()-Funktion damit
+function updateSummary(){
+  if(!window.getFormData) return;
+  const d = window.getFormData();
+  const box = document.getElementById('res-summary');
+  if(!box) return;
+
+  box.innerHTML = `
+    <dl>
+      <dt>Datum</dt><dd>${formatDateCH(d.date)}</dd>
+      <dt>Uhrzeit</dt><dd>${d.time || '–'}</dd>
+      <dt>Personen</dt><dd>${personsLine(d)}</dd>
+      <dt>Kontakt</dt><dd>${(d.name||'–')} · ${(d.phone||'–')}${d.email? ' · '+d.email : ''}</dd>
+      <dt>Präferenzen</dt><dd>${d.prefs||'–'}</dd>
+      <dt>Bemerkungen</dt><dd>${d.notes||'–'}</dd>
+    </dl>`;
+}
+
+
+  // Navigation
+  form.addEventListener('click', (e)=>{
+    if(e.target.matches('[data-next]')){
+      if(!validateStep(idx)) return;
+      idx = Math.min(idx+1, panels.length-1);
+      show(idx);
+    }
+    if(e.target.matches('[data-prev]')){
+      idx = Math.max(idx-1, 0);
+      show(idx);
+    }
+  });
+
+  // Live-Enable der Next-Buttons
+  ['change','input'].forEach(ev=>{
+    form.addEventListener(ev, ()=> updateNextEnabled());
+  });
+
+  // Auto-Weiter bei Auswahl
+  resDate?.addEventListener('change', ()=>{ if(validateStep(0)){ idx=1; show(idx); }});
+  resTime?.addEventListener('change', ()=>{ if(validateStep(1)){ idx=2; show(idx); }});
+
+  // Initial: wenn heute vorgewählt wurde, Next aktivieren
+  show(0);
+})();
+</script>
+<script>
+// --- Kinder >=1 => Hochstühle zeigen ---
+(function(){
+  const childrenSel = document.getElementById('res-children');
+  const highWrap    = document.getElementById('highchair-wrap');
+  const highSel     = document.getElementById('res-highchairs');
+
+  if(!childrenSel || !highWrap || !highSel) return;
+
+  function toggleHighchairs(){
+    const hasKids = parseInt(childrenSel.value, 10) >= 1;
+    highWrap.classList.toggle('hide', !hasKids);
+    highWrap.setAttribute('aria-hidden', String(!hasKids));
+    if(!hasKids){
+      // zurücksetzen, wenn ausgeblendet
+      highSel.value = '0';
+      // falls du eine Zusammenfassung hast:
+      if(typeof window.getFormData === 'function'){
+        document.dispatchEvent(new Event('input')); // triggert ggf. deine Live-Summary
+      }
+    }
+  }
+
+  // initial & bei Änderung
+  toggleHighchairs();
+  childrenSel.addEventListener('change', toggleHighchairs);
+})();
+</script>
+<script>
+// --- Kontaktart-Auswahl ---
+(function(){
+  const form = document.getElementById('reserve-form');
+  const contactRadios = form.querySelectorAll('input[name="contactType"]');
+  const phoneWrap = document.getElementById('contact-phone');
+  const emailWrap = document.getElementById('contact-email');
+  const phoneInput = document.getElementById('res-phone');
+  const emailInput = document.getElementById('res-email');
+
+  function toggleContact(){
+    const sel = form.querySelector('input[name="contactType"]:checked')?.value;
+    phoneWrap.classList.toggle('hide', sel !== 'phone');
+    emailWrap.classList.toggle('hide', sel !== 'email');
+
+    // required toggeln
+    phoneInput.required = sel === 'phone';
+    emailInput.required = sel === 'email';
+  }
+
+  contactRadios.forEach(r=>r.addEventListener('change', toggleContact));
+  toggleContact(); // initial
+})();
+
+</script>
+<script>
+  // Mobile Drawer
+  const drawer = document.getElementById('mobile-drawer');
+  const backdrop = document.getElementById('drawer-backdrop');
+  const openBtn = document.getElementById('open-drawer');
+  const closeBtn = document.getElementById('close-drawer');
+
+  function openDrawer(){
+    drawer.classList.add('show');
+    drawer.setAttribute('aria-hidden', 'false');
+    openBtn.setAttribute('aria-expanded','true');
+    backdrop.hidden = false;
+    backdrop.classList.add('show');
+    document.body.classList.add('no-scroll');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('show');
+    drawer.setAttribute('aria-hidden', 'true');
+    openBtn.setAttribute('aria-expanded','false');
+    backdrop.classList.remove('show');
+    setTimeout(()=>{backdrop.hidden = true;},200);
+    document.body.classList.remove('no-scroll');
+  }
+  openBtn && openBtn.addEventListener('click', openDrawer);
+  closeBtn && closeBtn.addEventListener('click', closeDrawer);
+  backdrop && backdrop.addEventListener('click', closeDrawer);
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
+
+  // iOS 100vh-Bug – dynamische Viewport-Einheit
+  function setVh(){ document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px'); }
+  setVh(); window.addEventListener('resize', setVh);
+
+  // Vollbild-PDF schließen (falls du das PDF-Modal verwendest)
+  const pdfCloseFab = document.getElementById('pdf-close-fab');
+  pdfCloseFab && pdfCloseFab.addEventListener('click', ()=>{
+    const dlg = document.getElementById('pdf-modal');
+    dlg?.close(); document.body.classList.remove('no-scroll');
+  });
 </script>
 
   <script async src="//www.instagram.com/embed.js"></script>

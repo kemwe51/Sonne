@@ -36,9 +36,10 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="bilder/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="alternate icon" href="bilder/favicon-192.png" sizes="192x192" type="image/png">
-<link rel="stylesheet" <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+
 
 
   <!-- Strukturierte Daten: Restaurant + ReserveAction -->
@@ -350,6 +351,7 @@ input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4
 .flatpickr-day.closed.nextMonthDay{
   background:#fef2f2!important;border-color:#fecaca!important;color:#991b1b!important;opacity:1!important
 }
+.flatpickr-calendar{ z-index: 100000; }
 
   </style>
 </head>
@@ -526,7 +528,8 @@ input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4
       <div class="reserve-grid">
         <div class="f">
           <label for="res-date">Datum*</label>
-          <input id="res-date" name="date" type="date" required inputmode="numeric" min="" autocomplete="off">
+          <input id="res-date" name="date" type="text" required inputmode="numeric" autocomplete="off">
+
           <div class="help">Montag & Dienstag geschlossen</div>
         </div>
 
@@ -1000,57 +1003,35 @@ document.addEventListener("DOMContentLoaded", () => {
 <script>
 (function(){
   const resDate = document.getElementById('res-date');
-  if (!resDate || typeof flatpickr === 'undefined') return;
+  if (!resDate) return;
 
-  // Sicherstellen, dass Öffnungszeiten vorhanden sind
-  const opening = window.opening || {0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
-
-  function isOpenDate(date){
-    const dow = date.getDay(); // 0=So..6=Sa
-    const ranges = opening[dow] || [];
-    return ranges.length > 0;
+  if (typeof flatpickr === 'undefined') {
+    resDate.placeholder = 'Kalender konnte nicht geladen werden';
+    resDate.type = 'date';   // Fallback
+    return;
   }
 
-  const fp = flatpickr(resDate, {
-  disableMobile: true,         // <— erzwingt Flatpickr UI
+  const reserveModal = document.getElementById('reserve-modal');
+  const opening = window.opening || {0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
+  const isOpenDate = d => (opening[d.getDay()]||[]).length > 0;
 
+  const fp = flatpickr(resDate, {
+    appendTo: reserveModal,   // <<< WICHTIG
+    disableMobile: true,
     altInput: true,
     altFormat: "d.m.Y",
     dateFormat: "Y-m-d",
     minDate: "today",
-    // ✅ Deutsch aktivieren (wir haben de.js geladen)
     locale: 'de',
-    // ❗ Auswählen an geschlossenen Tagen verhindern? -> 'disable' drin lassen,
-    // sonst diesen Block entfernen
-    disable: [
-      function(date){ return !isOpenDate(date); }
-    ],
-    onDayCreate: function(dObj, dStr, fp, dayElem){
-      const date = dayElem.dateObj;
-      if (isOpenDate(date)) {
-        dayElem.classList.add('open');
-      } else {
-        dayElem.classList.add('closed');
-      }
+    disable: [ d => !isOpenDate(d) ],
+    onDayCreate(_, __, ___, dayElem){
+      const d = dayElem.dateObj;
+      dayElem.classList.add(isOpenDate(d) ? 'open' : 'closed');
     },
-    onChange: function(selectedDates, dateStr){
-      if(dateStr && typeof window.fillTimesFor === 'function'){
-        window.fillTimesFor(dateStr);
-      }
-    },
-    onReady: function(selectedDates, dateStr){
+    onChange(_, dateStr){ window.fillTimesFor?.(dateStr); },
+    onReady(_, dateStr){
       const initial = dateStr || new Date().toISOString().slice(0,10);
-      if (typeof window.buildWeekLegend === 'function'){
-        window.buildWeekLegend(initial);
-      }
-    }
-  });
-
-  // Wenn Datum anderweitig gesetzt wird, Flatpickr synchron halten
-  resDate.addEventListener('change', e => {
-    const v = e.target.value;
-    if (v && fp.selectedDates?.[0]?.toISOString().slice(0,10) !== v) {
-      fp.setDate(v, true);
+      window.buildWeekLegend?.(initial);
     }
   });
 })();

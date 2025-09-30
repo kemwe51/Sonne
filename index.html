@@ -271,6 +271,8 @@ dialog#reserve-modal::backdrop{
   outline: 3px solid rgba(247,201,72,.35);
   border-color:#111;
 }
+
+/* CTA-Kontrast auf Glas */
 .glass-card .cta{
   background:#111; color:#fff; border-color: rgba(255,255,255,.45);
 }
@@ -278,11 +280,12 @@ dialog#reserve-modal::backdrop{
   background:rgba(255,255,255,.85);
   border-color:rgba(0,0,0,.08);
 }
+/* Galerie: einheitliche Bildkacheln */
 #galerie .grid-3 img{
   width: 100%;
-  aspect-ratio: 1 / 1;  
-  height: auto;         
-  object-fit: cover;     
+  aspect-ratio: 1 / 1;   /* quadratische Kacheln */
+  height: auto;           /* wird aus aspect-ratio berechnet */
+  object-fit: cover;      /* füllt die Kachel, ohne zu verzerren */
   object-position: center;
   display: block;
 }
@@ -338,7 +341,7 @@ dialog#reserve-modal::backdrop{
         <h2 id="speisekarte-titel" class="section-title">Speisekarte</h2>
         <div class="menu-grid">
           <article class="menu-card">
-            <button class="menu-btn" data-pdf="Speisekarte/Wochenmenuplan-20.08-22.08.2025.pdf">Wochenmenü</button>
+            <button class="menu-btn" data-pdf="Wochenmenuplan-20.08-22.08.2025.pdf">Wochenmenü</button>
             <div class="menu-thumb" style="margin-top:.75rem">
               <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
                 <source src="wochenmenue.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
@@ -346,7 +349,7 @@ dialog#reserve-modal::backdrop{
             </div>
           </article>
           <article class="menu-card">
-            <button class="menu-btn" data-pdf="Speisekarte/Speisekarte_Sommer.pdf">SPEISEKARTE</button>
+            <button class="menu-btn" data-pdf="Speisekarte_Sommer.pdf">SPEISEKARTE</button>
             <div class="menu-thumb" style="margin-top:.75rem">
               <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
                 <source src="speisekarte_sommer.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
@@ -354,7 +357,7 @@ dialog#reserve-modal::backdrop{
             </div>
           </article>
           <article class="menu-card">
-            <button class="menu-btn" data-pdf="Speisekarte/Kinderkarte.pdf">Kinderkarte</button>
+            <button class="menu-btn" data-pdf="Kinderkarte.pdf">Kinderkarte</button>
             <div class="menu-thumb" style="margin-top:.75rem">
               <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
                 <source src="kinderkarte.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
@@ -532,7 +535,7 @@ dialog#reserve-modal::backdrop{
         </div>
 
         <div class="f" style="grid-column:1/-1">
-          <label class="tos"><input type="checkbox" id="res-privacy" required style="accent-color:#111"> Ich akzeptiere die Verarbeitung meiner Angaben zur Tischreservierung gemäss <a href="/Datenschutz.html" target="_blank" rel="noopener">Datenschutz</a>. *</label>
+          <label class="tos"><input type="checkbox" id="res-privacy" required style="accent-color:#111"> Ich akzeptiere die Verarbeitung meiner Angaben zur Tischreservierung gemäss <a href="Datenschutz.html" target="_blank" rel="noopener">Datenschutz</a>. *</label>
         </div>
       </div>
 

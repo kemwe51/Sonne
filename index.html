@@ -1214,24 +1214,19 @@ display:grid; place-items:center;
         <label for="res-name">Name*</label>
         <input id="res-name" name="name" type="text" required autocomplete="name" placeholder="Name">
       </div>
-<div class="f" style="grid-column:1/-1">
-  <label>Bevorzugte Kontaktart*</label>
-  <div class="chips" id="contact-type">
-    <label class="chip"><input type="radio" name="contactType" value="phone" required style="accent-color:#111"> Telefon</label>
-    <label class="chip"><input type="radio" name="contactType" value="email" required style="accent-color:#111"> E-Mail</label>
-  </div>
-</div>
+<div class="f">
+  <label for="phone">Telefon*</label>
+  <input id="phone" name="phone" type="tel" required
+         inputmode="tel" autocomplete="tel"
+         pattern="^\+?\d[\d\s()\-]{6,}$"
+         placeholder="079">
+ </div>
 
-<div id="contact-phone" class="f hide">
-  <label for="res-phone">Telefon*</label>
-  <input id="res-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+41 …">
+<div class="f">
+  <label for="email">E-Mail*</label>
+  <input id="email" name="email" type="email" required
+         autocomplete="email" placeholder="name@example.ch">
 </div>
-
-<div id="contact-email" class="f hide">
-  <label for="res-email">E-Mail*</label>
-  <input id="res-email" name="email" type="email" autocomplete="email" placeholder="name@example.ch">
-</div>
-
       <div class="f" style="grid-column:1/-1">
         <label for="res-notes">Bemerkungen</label>
         <textarea id="res-notes" name="notes" rows="3" placeholder="z. B. Kinderwagen, Allergien, ruhiger Tisch, Terrasse, Kindergeburtstag …"></textarea>
@@ -1263,8 +1258,7 @@ display:grid; place-items:center;
       <button type="submit" class="cta" id="send-default">Reservieren</button>
       </div>
     <p class="help" id="res-feedback" aria-live="polite" style="margin-top:.5rem"></p>
-    <p class="help">Sofortige Fragen? Ruf uns an: <a href="tel:+41627231915">+41 62 723 19 15</a></p>
-
+    
     <div class="nav-row">
       <button type="button" class="cta secondary" data-prev>Zurück</button>
     </div>
@@ -1490,9 +1484,8 @@ reserveModal.addEventListener('click', (e)=>{
     const feedback = document.getElementById('res-feedback');
     const toast = document.getElementById('toast');
 
-   function getFormData(){
-  const form = document.getElementById('reserve-form');
-  const fd = new FormData(form);
+function getFormData(){
+  const fd = new FormData(document.getElementById('reserve-form'));
   return {
     date: fd.get('date') || '',
     time: fd.get('time') || '',
@@ -1500,22 +1493,22 @@ reserveModal.addEventListener('click', (e)=>{
     children: fd.get('children') || '0',
     highchairs: fd.get('highchairs') || '0',
     name: fd.get('name') || '',
-    phone: fd.get('phone') || '',
-    email: fd.get('email') || '',
-    notes: fd.get('notes') || ''
+    phone: (fd.get('phone') || '').trim(),
+    email: (fd.get('email') || '').trim(),
+    notes: (fd.get('notes') || '').trim()
   };
 }
 
-    function messageText(d){
+function messageText(d){
   return [
-    `Anfrage Tischreservierung`,
+    'Anfrage Tischreservierung',
     `Datum: ${d.date}`,
     `Uhrzeit: ${d.time}`,
     `Personen: ${d.guests} (Kinder: ${d.children}, Hochstühle: ${d.highchairs})`,
     d.notes ? `Bemerkungen: ${d.notes}` : '',
     `Name: ${d.name}`,
     `Telefon: ${d.phone}`,
-    d.email ? `E-Mail: ${d.email}` : ''
+    `E-Mail: ${d.email}`
   ].filter(Boolean).join('\n');
 }
 
@@ -1775,21 +1768,18 @@ function personsLine(d){
 
 // ⬇️ ERSETZE DEINE bestehende updateSummary()-Funktion damit
 function updateSummary(){
-  if(!window.getFormData) return;
-  const d = window.getFormData();
+  const d = getFormData();
   const box = document.getElementById('res-summary');
   if(!box) return;
-
   box.innerHTML = `
     <dl>
-      <dt>Datum</dt><dd>${formatDateCH(d.date)}</dd>
+      <dt>Datum</dt><dd>${formatDateCH ? formatDateCH(d.date) : (d.date || '–')}</dd>
       <dt>Uhrzeit</dt><dd>${d.time || '–'}</dd>
-      <dt>Personen</dt><dd>${personsLine(d)}</dd>
-      <dt>Kontakt</dt><dd>${(d.name||'–')} · ${(d.phone||'–')}${d.email? ' · '+d.email : ''}</dd>
-      <dt>Bemerkungen</dt><dd>${d.notes||'–'}</dd>
+      <dt>Personen</dt><dd>${personsLine ? personsLine(d) : (d.guests || '–')}</dd>
+      <dt>Kontakt</dt><dd>${d.name || '–'} · ${d.phone || '–'} · ${d.email || '–'}</dd>
+      <dt>Bemerkungen</dt><dd>${d.notes || '–'}</dd>
     </dl>`;
 }
-
 
   // Navigation
   form.addEventListener('click', (e)=>{

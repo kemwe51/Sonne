@@ -495,6 +495,55 @@ body.no-scroll{overflow:hidden}
   margin: 0;
   padding: 0;
 }
+/* =========================================================
+   Floating Logo Bubble (größer + näher am Text)
+   ========================================================= */
+:root{
+  /* -> Größe der Bubble: Desktop deutlich größer */
+  --bubble-size: clamp(150px, 20vw, 230px);
+}
+
+.logo-bubble{
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+
+  display: grid;
+  place-items: center;
+
+  width: var(--bubble-size);
+  aspect-ratio: 1 / 1;
+  padding: clamp(8px, 1.2vw, 14px);
+
+  /* organische „liquid glass“ Optik */
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow: 0 10px 25px rgba(0,0,0,.12), inset 0 1px 1px rgba(255,255,255,.6);
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+}
+
+.logo-bubble img{
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.08));
+}
+
+/* Mobile etwas kleiner, damit es nicht ins Layout grätscht */
+@media (max-width: 640px){
+  :root{ --bubble-size: clamp(90px, 22vw, 120px); }
+  .logo-bubble{ top: 10px; left: 10px; }
+}
+
+/* =========================================================
+   Navbar-Logo vollständig ausblenden
+   ========================================================= */
+.site-header .brand{
+  display: none !important; /* entfernt Logo/Brand im Header */
+}
 
   </style>
 </head>
@@ -507,12 +556,7 @@ body.no-scroll{overflow:hidden}
 
   <header>
     <div class="wrap sitebar" role="navigation" aria-label="Hauptnavigation">
-      <a class="brand" href="#home" aria-label="Restaurant Sonne Kölliken – Startseite">
-  <img class="brand-logo" src="logo-restaurant-sonne.png"
-       alt="Restaurant Sonne Kölliken"
-       width="336" height="192" decoding="async" />
-</a>
-      <nav>
+            <nav>
         <ul>
           <li><a href="#speisekarte">Speisekarte</a></li>
           <li><a href="#familien">Familien</a></li>

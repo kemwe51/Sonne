@@ -544,6 +544,49 @@ body.no-scroll{overflow:hidden}
 .site-header .brand{
   display: none !important; /* entfernt Logo/Brand im Header */
 }
+/* ====== NAV: Liquid Glass Bubbles ====== */
+.site-header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.site-nav .nav{ display:flex; gap:.6rem; align-items:center; margin:0; padding:0; }
+.site-nav .nav li{ list-style:none; }
+
+/* Grundstil für alle Nav-Buttons */
+.glass-bubble{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 10px 16px;
+  border-radius: 18px;
+  text-decoration:none; font-weight:700; letter-spacing:.2px; color:#111;
+
+  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow: 0 6px 16px rgba(0,0,0,.12), inset 0 1px 1px rgba(255,255,255,.6);
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.glass-bubble:hover{ transform: translateY(-1px); box-shadow: 0 12px 28px rgba(0,0,0,.16), inset 0 1px 1px rgba(255,255,255,.65); }
+.glass-bubble:active{ transform: translateY(0); }
+.glass-bubble:focus-visible{ outline: 2px solid rgba(0,0,0,.2); outline-offset: 2px; }
+
+/* „Reservieren“ etwas prominenter */
+.reserve-link{
+  background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.35));
+  box-shadow: 0 10px 26px rgba(0,0,0,.18), 0 0 0 4px rgba(0,0,0,.03), inset 0 1px 1px rgba(255,255,255,.65);
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+/* Mobile kompakter */
+@media (max-width: 900px){
+  .glass-bubble{ padding: 8px 12px; font-weight:600; }
+  .site-nav .nav{ gap:.4rem; }
+}
+
+/* Falls das alte schwarze Button-Design noch greift – überschreiben */
+.site-header a.button,
+.site-header .button.primary{
+  background: none !important; color: #111 !important; box-shadow: none !important; border: 0 !important;
+  padding: 0 !important; border-radius: 0 !important;
+}
 
   </style>
 </head>
@@ -556,15 +599,17 @@ body.no-scroll{overflow:hidden}
 
   <header>
     <div class="wrap sitebar" role="navigation" aria-label="Hauptnavigation">
-            <nav>
-        <ul>
-          <li><a href="#speisekarte">Speisekarte</a></li>
-          <li><a href="#familien">Familien</a></li>
-          <li><a href="#galerie">Galerie</a></li>
-          <li><a href="#kontakt">Kontakt</a></li>
-        </ul>
-      </nav>
-      <button class="cta" id="open-reserve" aria-haspopup="dialog" aria-controls="reserve-modal">Reservieren</button>
+          <nav class="site-nav">
+  <ul class="nav">
+    <li><a href="#speisekarte" class="glass-bubble">Speisekarte</a></li>
+    <li><a href="#familien"   class="glass-bubble">Familien</a></li>
+    <li><a href="#galerie"    class="glass-bubble">Galerie</a></li>
+    <li><a href="#kontakt"    class="glass-bubble">Kontakt</a></li>
+  </ul>
+
+  <a href="#reservieren" class="glass-bubble reserve-link">Reservieren</a>
+</nav>
+
     </div>
   </header>
 
@@ -588,11 +633,7 @@ body.no-scroll{overflow:hidden}
 
   <p><em>Das Team der Sonne und Sultan Bal</em></p>
 </div>
-          <div class="actions">
-            <button class="cta" id="open-reserve-hero" aria-haspopup="dialog" aria-controls="reserve-modal">Jetzt online reservieren</button>
-            <a class="cta secondary" href="tel:+41627231915" aria-label="Telefonische Reservierung">📞 +41 62 723 19 15</a>
-          </div>
-        </div>
+                  </div>
         <div>
           <img src="sonne-hero.jpg" width="1200" height="800" loading="eager" alt="Gemütliche Gaststube im Restaurant Sonne in Kölliken">
         </div>

@@ -831,6 +831,107 @@ body.no-scroll{overflow:hidden}
 #home .hero, #home .hero-img, #home .sun-hero, #home img[alt*="sonne-hero"]{
   display:none !important;
 }
+/* ================================
+   SPEISEKARTEN – Liquid Glass Tiles
+   ================================ */
+:root{
+  --glass-bg-1: rgba(255,255,255,.65);
+  --glass-bg-2: rgba(255,255,255,.40);
+  --glass-border: rgba(0,0,0,.10);
+  --glass-shadow: 0 12px 26px rgba(0,0,0,.12);
+  --glass-shadow-hover: 0 18px 34px rgba(0,0,0,.16);
+}
+
+.menu-buttons{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: clamp(12px, 2.4vw, 22px);
+  margin: clamp(12px, 2vw, 20px) 0 clamp(18px, 3vw, 32px);
+}
+
+.menu-button{
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 8px 12px;
+
+  padding: 16px 18px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 700;
+  letter-spacing: .2px;
+
+  background: linear-gradient(180deg, var(--glass-bg-1), var(--glass-bg-2));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 1px rgba(255,255,255,.65);
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+}
+
+.menu-button:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-hover), inset 0 1px 1px rgba(255,255,255,.7);
+}
+.menu-button:active{ transform: translateY(0); }
+.menu-button:focus-visible{ outline: 2px solid rgba(0,0,0,.22); outline-offset: 3px; }
+
+/* Inhalt */
+.menu-ico{
+  grid-row: 1 / span 2;
+  display:grid; place-items:center;
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  font-size: 22px; line-height: 1;
+  background: radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.75), rgba(255,255,255,.35));
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.7);
+}
+
+.menu-title{
+  grid-column: 2; grid-row: 1;
+  font-size: clamp(1.02rem, 1.4vw, 1.1rem);
+display:grid; place-items:center;
+
+}
+
+.menu-meta{
+  grid-column: 2; grid-row: 2;
+  font-weight: 600;
+  font-size: .86rem;
+  color: #495b68;
+  opacity: .9;
+}
+
+.menu-arrow{
+  grid-column: 3; grid-row: 1 / span 2;
+  align-self: center;
+  font-size: 1.2rem;
+  translate: 0 0;
+  transition: translate .18s ease, opacity .18s ease;
+  opacity: .8;
+}
+.menu-button:hover .menu-arrow{ translate: 4px 0; opacity: 1; }
+
+/* Prominentere Karte (z. B. Speisekarte) */
+.menu-button--primary{
+  background: linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.48));
+  border-color: rgba(0,0,0,.14);
+  box-shadow: 0 14px 32px rgba(0,0,0,.16), inset 0 1px 1px rgba(255,255,255,.7);
+}
+
+/* Responsiv */
+@media (max-width: 980px){
+  .menu-buttons{ grid-template-columns: repeat(2, minmax(220px,1fr)); }
+}
+@media (max-width: 640px){
+  .menu-buttons{ grid-template-columns: 1fr; }
+  .menu-button{ padding: 14px 16px; }
+  .menu-ico{ width: 38px; height: 38px; font-size: 20px; }
+}
 
   </style>
 </head>
@@ -845,8 +946,7 @@ body.no-scroll{overflow:hidden}
     <div class="wrap sitebar" role="navigation" aria-label="Hauptnavigation">
           <nav class="site-nav">
   <ul class="nav">
-    <li><a href="#speisekarte" class="glass-bubble">Speisekarte</a></li>
-    <li><a href="#familien"   class="glass-bubble">Familien</a></li>
+    <li><a href="#speisekarten" class="glass-bubble">Speisekarten</a></li>
     <li><a href="#galerie"    class="glass-bubble">Galerie</a></li>
     <li><a href="#kontakt"    class="glass-bubble">Kontakt</a></li>
   </ul>
@@ -869,7 +969,7 @@ body.no-scroll{overflow:hidden}
   <!-- Full-bleed Bild -->
   <figure class="hero-bg" aria-hidden="true">
     <img
-      src="hero-restaurant-sonne.jpg"
+      src="bilder/hero-restaurant-sonne.jpg"
       alt=""
       loading="eager"
       decoding="async"
@@ -894,24 +994,32 @@ body.no-scroll{overflow:hidden}
 
 
     <!-- Speisekarte -->
-   <section id="speisekarte" aria-labelledby="speisekarte-titel" style="background:#fffef8">
+   <section id="speisekarten" aria-labelledby="speisekarte-titel" style="background:#fffef8">
   <div class="wrap">
-    <h2 id="speisekarte-titel" class="section-title">Speisekarte</h2>
+    <h2 id="speisekarte-titel" class="section-title">Speisekarten</h2>
 
     <!-- Nur Buttons (klar ersichtlich) -->
-    <div class="menu-grid">
-      <article class="menu-card">
-        <button class="menu-btn" data-pdf="Wochenmenuplan-20.08-22.08.2025.pdf">Wochenmenü</button>
-      </article>
+   <!-- Speisekarten-Buttons (Liquid Glass Tiles) -->
+<div class="menu-buttons">
+  <a class="menu-button" href="#" data-pdf="Wochenmenuplan.pdf" aria-label="Wochenmenü als PDF öffnen">
+    
+    <span class="menu-title">Wochenmenü</span>
+    
+    
+  </a>
 
-      <article class="menu-card">
-        <button class="menu-btn" data-pdf="Speisekarte_Sommer.pdf">SPEISEKARTE</button>
-      </article>
+  <a class="menu-button menu-button--primary" href="#" data-pdf="Speisekarte.pdf" aria-label="Speisekarte als PDF öffnen">
+    
+    <span class="menu-title">Speisekarte</span>
+    
+  </a>
 
-      <article class="menu-card">
-        <button class="menu-btn" data-pdf="Kinderkarte.pdf">Kinderkarte</button>
-      </article>
-    </div>
+  <a class="menu-button" href="#" data-pdf="Kinderkarte.pdf" aria-label="Kinderkarte als PDF öffnen">
+    
+    <span class="menu-title">Kinderkarte</span>
+    
+  </a>
+</div>
 
     <!-- Videos deutlich abgesetzt -->
     <div class="menu-videos" style="margin-top:3rem">
@@ -938,25 +1046,7 @@ body.no-scroll{overflow:hidden}
 </section>
 
 
-    <!-- Familienfreundlich -->
-    <section id="familien" aria-labelledby="familien-titel" style="background:#fffef8">
-      <div class="wrap grid-2">
-        <div>
-          <h2 id="familien-titel" class="section-title">Familien willkommen</h2>
-          <p>Bei uns essen Gross und Klein entspannt: Die <strong>Kinderecke</strong> beschäftigt Kinder, <strong>Hochstühle</strong> sorgen für sicheren Sitz, und ein <strong>Wickeltisch</strong> macht den Besuch unkompliziert.</p>
-          <ul class="chips" aria-label="Familienfeatures">
-            <li class="chip">Kinderecke</li>
-            <li class="chip">Hochstühle</li>
-            <li class="chip">Wickeltisch</li>
-            <li class="chip">Terrasse</li>
-          </ul>
-        </div>
-        <div>
-          <img src="sonne-kinderecke.jpg" alt="Kinderecke im Restaurant Sonne – kinderfreundlich für Familien" width="1200" height="800" loading="lazy">
-        </div>
-      </div>
-    </section>
-
+   
     <!-- Galerie -->
     <section id="galerie" aria-labelledby="galerie-titel">
       <div class="wrap">
@@ -973,7 +1063,7 @@ body.no-scroll{overflow:hidden}
     <section id="kontakt" aria-labelledby="kontakt-titel" style="background:#fffef8">
       <div class="wrap grid-2">
         <div>
-          <h2 id="kontakt-titel" class="section-title">Kontakt & Reservierung</h2>
+          <h2 id="kontakt-titel" class="section-title">Kontakt</h2>
           <address>
             <strong>Restaurant Sonne</strong><br>
             <a href="https://www.google.com/maps/place/Restaurant+Sonne/@47.3361391,8.0218627,590m/data=!3m2!1e3!4b1!4m6!3m5!1s0x47903b47ec4c8d19:0x4840ca9b62a69ec9!8m2!3d47.3361391!4d8.0244376!16s%2Fg%2F1tfrwdt3" target="_blank" rel="noopener">Hauptstrasse 29, 5742 Kölliken</a><br>
@@ -981,9 +1071,7 @@ body.no-scroll{overflow:hidden}
             <a href="tel:+41627231915">+41&nbsp;62&nbsp;723&nbsp;19&nbsp;15</a><br>
             <span>Sultan Bal, Geschäftsführerin</span>
           </address>
-          <p style="margin-top:.75rem">
-            <a class="cta" id="open-reserve-contact" aria-haspopup="dialog" aria-controls="reserve-modal">Online reservieren</a>
-          </p>
+          
           <p style="margin-top:.5rem">
             <a href="https://www.instagram.com/sonnekoelliken/" target="_blank" rel="me noopener">📸 Folge uns auf <strong>@sonnekoelliken</strong></a>
           </p>

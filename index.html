@@ -441,10 +441,68 @@ a.button, .cta, button, .menu-btn { min-height:48px; padding:.85rem 1rem; border
 #pdf-close-fab{position:fixed;top:12px;right:12px;width:36px;height:36px;border:0;border-radius:9999px;background:rgba(0,0,0,.35);color:#fff;font:700 20px/36px system-ui;cursor:pointer;opacity:.7}
 #pdf-close-fab:hover{opacity:1}
 body.no-scroll{overflow:hidden}
+/* Floating "liquid glass" bubble links oben */
+.logo-bubble{
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 9999;
+
+  display: grid;
+  place-items: center;
+
+  width: clamp(72px, 10vw, 120px);  /* Größe des Bubbles */
+  aspect-ratio: 1 / 1;
+  padding: clamp(6px, 1.2vw, 12px);
+
+  border-radius: 26px 22px 28px 24px / 24px 28px 22px 26px; /* organische Bubble-Form */
+  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow:
+      0 10px 25px rgba(0,0,0,.12),
+      inset 0 1px 1px rgba(255,255,255,.6);
+
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+}
+
+.logo-bubble img{
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.08));
+}
+
+/* Bubble etwas kleiner auf sehr schmalen Screens */
+@media (max-width: 640px){
+  .logo-bubble{
+    width: clamp(60px, 18vw, 84px);
+    top: 10px; left: 10px;
+    padding: 8px;
+    border-radius: 22px;
+  }
+}
+
+/* Fallback falls kein backdrop-filter unterstützt wird */
+@supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))){
+  .logo-bubble{ background: rgba(255,255,255,.85); }
+}
+
+/* Header-Brand im Navbar ausblenden, damit es nicht doppelt erscheint */
+.logo-bubble ~ .site-header .brand{
+  visibility: hidden;
+  width: 0;
+  margin: 0;
+  padding: 0;
+}
 
   </style>
 </head>
 <body>
+  <!-- FLOATING LOGO BUBBLE -->
+  <a href="#home" class="logo-bubble" aria-label="Zur Startseite">
+    <img src="logo-restaurant-sonne.png" alt="Restaurant Sonne Kölliken">
+  </a>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
   <header>

@@ -681,7 +681,13 @@ body.no-scroll{overflow:hidden}
     <li><a href="#kontakt"    class="glass-bubble">Kontakt</a></li>
   </ul>
 
-  <a href="#reservieren" class="glass-bubble reserve-link">Reservieren</a>
+<a href="#reservieren"
+   id="open-reserve"
+   class="glass-bubble reserve-link"
+   aria-haspopup="dialog"
+   aria-controls="reserve-modal"
+   role="button">Reservieren</a>
+
 </nav>
 
     </div>
@@ -969,16 +975,7 @@ body.no-scroll{overflow:hidden}
         <label for="res-notes">Bemerkungen</label>
         <textarea id="res-notes" name="notes" rows="3" placeholder="z. B. Kinderwagen, Allergien, ruhiger Tisch, Terrasse, Kindergeburtstag …"></textarea>
       </div>
-      <div class="f" style="grid-column:1/-1">
-        <label>Präferenzen</label>
-        <div class="chips" id="res-preferences">
-          <label class="chip"><input type="checkbox" name="pref" value="Terrasse" style="accent-color:#111"> Terrasse</label>
-          <label class="chip"><input type="checkbox" name="pref" value="Ruhig" style="accent-color:#111"> Ruhig</label>
-          <label class="chip"><input type="checkbox" name="pref" value="Nähe Kinderecke" style="accent-color:#111"> Nähe Kinderecke</label>
-        </div>
-        <div class="help">Wir versuchen Wünsche nach Möglichkeit zu erfüllen.</div>
-      </div>
-      <div class="f" style="grid-column:1/-1">
+            <div class="f" style="grid-column:1/-1">
         <label class="tos"><input type="checkbox" id="res-privacy" required style="accent-color:#111"> Ich akzeptiere die Verarbeitung meiner Angaben zur Tischreservierung gemäss <a href="Datenschutz.html" target="_blank" rel="noopener">Datenschutz</a>. *</label>
       </div>
     </div>
@@ -997,8 +994,7 @@ body.no-scroll{overflow:hidden}
         <dt>Uhrzeit</dt><dd>–</dd>
         <dt>Personen</dt><dd>–</dd>
         <dt>Kontakt</dt><dd>–</dd>
-        <dt>Präferenzen</dt><dd>–</dd>
-        <dt>Bemerkungen</dt><dd>–</dd>
+                <dt>Bemerkungen</dt><dd>–</dd>
       </dl>
     </div>
 
@@ -1066,10 +1062,16 @@ reserveModal.addEventListener('click', (e)=>{
   }
 });
 
-    ['open-reserve','open-reserve-hero','open-reserve-contact'].forEach(id=>{
-      const el = document.getElementById(id);
-      if(el) el.addEventListener('click', ()=>reserveModal.showModal());
-    });
+   ['open-reserve','open-reserve-hero','open-reserve-contact'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('click', (e)=>{
+    // falls <a>, Ankersprung verhindern
+    if (el.tagName === 'A') e.preventDefault();
+    reserveModal.showModal();
+  });
+});
+
     document.getElementById('reserve-close').addEventListener('click', ()=>reserveModal.close());
 
 
@@ -1227,36 +1229,34 @@ reserveModal.addEventListener('click', (e)=>{
     const feedback = document.getElementById('res-feedback');
     const toast = document.getElementById('toast');
 
-    function getFormData(){
-      const fd = new FormData(form);
-      const prefs = [...form.querySelectorAll('input[name="pref"]:checked')].map(i=>i.value).join(', ');
-      return {
-        date: fd.get('date') || '',
-        time: fd.get('time') || '',
-        guests: fd.get('guests') || '',
-        children: fd.get('children') || '0',
-        highchairs: fd.get('highchairs') || '0',
-        name: fd.get('name') || '',
-        phone: fd.get('phone') || '',
-        email: fd.get('email') || '',
-        notes: fd.get('notes') || '',
-        prefs
-      };
-    }
+   function getFormData(){
+  const form = document.getElementById('reserve-form');
+  const fd = new FormData(form);
+  return {
+    date: fd.get('date') || '',
+    time: fd.get('time') || '',
+    guests: fd.get('guests') || '',
+    children: fd.get('children') || '0',
+    highchairs: fd.get('highchairs') || '0',
+    name: fd.get('name') || '',
+    phone: fd.get('phone') || '',
+    email: fd.get('email') || '',
+    notes: fd.get('notes') || ''
+  };
+}
 
     function messageText(d){
-      return [
-        `Anfrage Tischreservierung`,
-        `Datum: ${d.date}`,
-        `Uhrzeit: ${d.time}`,
-        `Personen: ${d.guests} (Kinder: ${d.children}, Hochstühle: ${d.highchairs})`,
-        d.prefs ? `Präferenzen: ${d.prefs}` : '',
-        d.notes ? `Bemerkungen: ${d.notes}` : '',
-        `Name: ${d.name}`,
-        `Telefon: ${d.phone}`,
-        d.email ? `E-Mail: ${d.email}` : ''
-      ].filter(Boolean).join('\n');
-    }
+  return [
+    `Anfrage Tischreservierung`,
+    `Datum: ${d.date}`,
+    `Uhrzeit: ${d.time}`,
+    `Personen: ${d.guests} (Kinder: ${d.children}, Hochstühle: ${d.highchairs})`,
+    d.notes ? `Bemerkungen: ${d.notes}` : '',
+    `Name: ${d.name}`,
+    `Telefon: ${d.phone}`,
+    d.email ? `E-Mail: ${d.email}` : ''
+  ].filter(Boolean).join('\n');
+}
 
     function showToast(txt){
       toast.textContent = txt;
@@ -1525,7 +1525,6 @@ function updateSummary(){
       <dt>Uhrzeit</dt><dd>${d.time || '–'}</dd>
       <dt>Personen</dt><dd>${personsLine(d)}</dd>
       <dt>Kontakt</dt><dd>${(d.name||'–')} · ${(d.phone||'–')}${d.email? ' · '+d.email : ''}</dd>
-      <dt>Präferenzen</dt><dd>${d.prefs||'–'}</dd>
       <dt>Bemerkungen</dt><dd>${d.notes||'–'}</dd>
     </dl>`;
 }

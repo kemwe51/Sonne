@@ -92,7 +92,7 @@
       {"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"08:30","closes":"22:00"},
       {"@type":"OpeningHoursSpecification","dayOfWeek":"Thursday","opens":"08:30","closes":"22:00"},
       {"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"08:30","closes":"23:00"},
-      {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"15:30","closes":"23:00"},
+      {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"17:30","closes":"23:00"},
       {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"09:00","closes":"21:00"}
     ]
   }
@@ -454,11 +454,20 @@ body.no-scroll{overflow:hidden}
       <div class="wrap hero-grid">
         <div>
           <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
-            <span class="eyebrow">Herzlich & familienfreundlich</span>
-            <span class="kinder-badge" aria-label="Kinderfreundliches Restaurant">👶 Kinderfreundliches Restaurant</span>
+            
           </div>
-          <h1>Gut bürgerliche Küche – von Sultan Bal geführt</h1>
-          <p class="lead">Cordon bleu in vielen Variationen, saftige Burger, Poulet im Chörbli und Frühstücksklassiker. Kinder sind bei uns besonders willkommen: mit Kinderecke, Hochstühlen, Malsets & Terrasse.</p>
+<h1>Liebe Gäste der Sonne</h1>
+<div class="lead">
+  <p>Das Team der Sonne mit Sultan Bal freuen sich, Sie im Restaurant unter neuer Führung begrüssen zu dürfen.</p>
+
+  <p>Neben bewährten Klassikern haben wir das Angebot angereichert, erweitert und bieten unter anderem genussvolle Frühstücksklassiker sowie Köstlichkeiten aus der Schweizer Küche, wie zum Beispiel das Poulet im Chörbli an. Für unsere kleinen Gäste gibt es eine eigene Kinderecke und ein spezielles Angebot, das den Familienbesuch noch angenehmer macht.</p>
+
+  <p>Wir laden Sie ein, gemeinsam mit uns das Restaurant Sonne in neuem Glanz zu erleben und freuen uns darauf, Sie bald bei uns begrüssen zu dürfen!</p>
+
+  <p><strong>Lasst euch überraschen, wir freuen uns!</strong></p>
+
+  <p><em>Das Team der Sonne und Sultan Bal</em></p>
+</div>
           <div class="actions">
             <button class="cta" id="open-reserve-hero" aria-haspopup="dialog" aria-controls="reserve-modal">Jetzt online reservieren</button>
             <a class="cta secondary" href="tel:+41627231915" aria-label="Telefonische Reservierung">📞 +41 62 723 19 15</a>
@@ -471,44 +480,56 @@ body.no-scroll{overflow:hidden}
     </section>
 
     <!-- Speisekarte -->
-    <section id="speisekarte" aria-labelledby="speisekarte-titel" style="background:#fffef8">
-      <div class="wrap">
-        <h2 id="speisekarte-titel" class="section-title">Speisekarte</h2>
-        <div class="menu-grid">
-          <article class="menu-card">
-            <button class="menu-btn" data-pdf="Wochenmenuplan-20.08-22.08.2025.pdf">Wochenmenü</button>
-            <div class="menu-thumb" style="margin-top:.75rem">
-              <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
-                <source src="wochenmenue.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
-              </video>
-            </div>
-          </article>
-          <article class="menu-card">
-            <button class="menu-btn" data-pdf="Speisekarte_Sommer.pdf">SPEISEKARTE</button>
-            <div class="menu-thumb" style="margin-top:.75rem">
-              <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
-                <source src="speisekarte_sommer.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
-              </video>
-            </div>
-          </article>
-          <article class="menu-card">
-            <button class="menu-btn" data-pdf="Kinderkarte.pdf">Kinderkarte</button>
-            <div class="menu-thumb" style="margin-top:.75rem">
-              <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
-                <source src="kinderkarte.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
-              </video>
-            </div>
-          </article>
+   <section id="speisekarte" aria-labelledby="speisekarte-titel" style="background:#fffef8">
+  <div class="wrap">
+    <h2 id="speisekarte-titel" class="section-title">Speisekarte</h2>
+
+    <!-- Nur Buttons (klar ersichtlich) -->
+    <div class="menu-grid">
+      <article class="menu-card">
+        <button class="menu-btn" data-pdf="Wochenmenuplan-20.08-22.08.2025.pdf">Wochenmenü</button>
+      </article>
+
+      <article class="menu-card">
+        <button class="menu-btn" data-pdf="Speisekarte_Sommer.pdf">SPEISEKARTE</button>
+      </article>
+
+      <article class="menu-card">
+        <button class="menu-btn" data-pdf="Kinderkarte.pdf">Kinderkarte</button>
+      </article>
+    </div>
+
+    <!-- Videos deutlich abgesetzt -->
+    <div class="menu-videos" style="margin-top:3rem">
+      <h3 class="section-title" style="font-size:1.25rem">Videos</h3>
+      <div class="grid-3">
+        <div class="menu-thumb">
+          <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
+            <source src="wochenmenue.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
+          </video>
+        </div>
+        <div class="menu-thumb">
+          <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
+            <source src="speisekarte_sommer.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
+          </video>
+        </div>
+        <div class="menu-thumb">
+          <video autoplay muted loop playsinline controls style="width:100%;border-radius:12px;box-shadow:var(--shadow)">
+            <source src="kinderkarte.mp4" type="video/mp4">Dein Browser unterstützt das Video-Tag nicht.
+          </video>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
 
     <!-- Familienfreundlich -->
     <section id="familien" aria-labelledby="familien-titel" style="background:#fffef8">
       <div class="wrap grid-2">
         <div>
           <h2 id="familien-titel" class="section-title">Familien willkommen</h2>
-          <p>Bei uns essen Gross und Klein entspannt: Die <strong>Kinderecke</strong> beschäftigt Kinder, <strong>Hochstühle</strong> sorgen für sicheren Sitz, und ein <strong>Wickeltisch</strong> macht den Besuch unkompliziert. Auf Wunsch bringen wir <strong>Malsets</strong> an den Tisch.</p>
+          <p>Bei uns essen Gross und Klein entspannt: Die <strong>Kinderecke</strong> beschäftigt Kinder, <strong>Hochstühle</strong> sorgen für sicheren Sitz, und ein <strong>Wickeltisch</strong> macht den Besuch unkompliziert.</p>
           <ul class="chips" aria-label="Familienfeatures">
             <li class="chip">Kinderecke</li>
             <li class="chip">Hochstühle</li>
@@ -562,11 +583,11 @@ body.no-scroll{overflow:hidden}
               <tr><th>Mittwoch</th><td>08:30 – 13:45 • 17:30 – 22:00</td></tr>
               <tr><th>Donnerstag</th><td>08:30 – 13:45 • 17:30 – 22:00</td></tr>
               <tr><th>Freitag</th><td>08:30 – 13:45 • 17:30 – 23:00</td></tr>
-              <tr><th>Samstag</th><td>15:30 – 23:00</td></tr>
+              <tr><th>Samstag</th><td>17:30 – 23:00</td></tr>
               <tr><th>Sonntag</th><td>09:00 – 13:45 • 17:30 – 21:00</td></tr>
             </tbody>
           </table>
-          <p class="help">Hinweis: Küche schliesst 45 Minuten vor Betriebsende.</p>
+          
         </div>
       </div>
     </section>

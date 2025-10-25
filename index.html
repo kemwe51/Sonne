@@ -1929,6 +1929,64 @@ function updateSummary(){
   });
 })();
 </script>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+  window.supabaseClient = createClient(
+    'https://ahmpjxdkyiwsjafoxiiq.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFobXBqeGRreWl3c2phZm94aWlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MTQ4MzAsImV4cCI6MjA3MTI5MDgzMH0.c74T_1DHAer2wvX80TZZsGnd40XlcUv7Nhfo7yeCJKU'
+  );
+</script>
+<script type="module">
+  const supabase = window.supabaseClient;
+
+  const form     = document.getElementById('reserve-form');
+  const btn      = document.getElementById('send-default');
+  const feedback = document.getElementById('res-feedback');
+
+  function val(id){ return document.getElementById(id)?.value?.trim() ?? ''; }
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    // Button sperren & Feedback
+    const oldLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Senden …';
+
+    // Payload aus Feldern zusammensetzen
+    const payload = {
+      res_date:    val('res-date'),                   // z.B. 2025-11-12
+      res_time:    val('res-time'),                   // z.B. 18:30
+      guests:      parseInt(val('res-guests') || '0', 10),
+      children:    val('res-children') || '0',
+      highchairs:  document.getElementById('res-highchairs')?.value ?? '0',
+      name:        val('res-name'),
+      phone:       val('phone'),
+      email:       val('email'),
+      notes:       document.getElementById('res-notes')?.value?.trim() || null
+    };
+
+    // In Supabase speichern (RLS-Policy erlaubt Insert)
+    const { error } = await supabase.from('reservations').insert(payload);
+
+    if (error){
+      feedback.textContent = 'Ups – das hat nicht geklappt. Bitte versuch es erneut oder ruf uns an.';
+      feedback.classList.remove('note-ok'); feedback.classList.add('note-bad');
+      console.error(error);
+    } else {
+      feedback.textContent = 'Danke! Wir haben deine Anfrage erhalten.';
+      feedback.classList.remove('note-bad'); feedback.classList.add('note-ok');
+
+      // Optional: Formular zurücksetzen & Dialog schliessen
+      form.reset();
+      try { document.getElementById('reserve-modal')?.close(); } catch(e){}
+    }
+
+    btn.disabled = false;
+    btn.textContent = oldLabel;
+  });
+</script>
 
 </body>
 </html>

@@ -363,12 +363,14 @@ input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4
 /* Flatpickr: offene/geschlossene Tage einfärben */
 .flatpickr-day.open{background:#f0fdf4;border-color:#bbf7d0;color:#166534}
 .flatpickr-day.closed{background:#fef2f2;border-color:#fecaca;color:#991b1b}
-.flatpickr-day.closed.disabled,
-.flatpickr-day.closed.prevMonthDay,
-.flatpickr-day.closed.nextMonthDay{
-  background:#fef2f2!important;border-color:#fecaca!important;color:#991b1b!important;opacity:1!important
-}
-.flatpickr-calendar{ z-index: 100000; }
+#reserve-form .flatpickr-day.disabled,
+#reserve-form .flatpickr-day.prevMonthDay,
+#reserve-form .flatpickr-day.nextMonthDay{
+  background: #f9fafb !important;
+  color: #9ca3af !important;
+  border-color: #e5e7eb !important;
+  cursor: not-allowed;
+}.flatpickr-calendar{ z-index: 100000; }
 /* --- Reservierungs-Wizard (Step-by-Step) --- */
 .wizard-steps{display:flex;gap:.5rem;align-items:center;margin:0 0 .75rem 0;padding:0;list-style:none}
 .wizard-steps .step-dot{
@@ -971,6 +973,119 @@ label.tos{
   align-items: center;
   gap: .5rem;
 }
+/* Inline-Kalender im Formular */
+#date-picker .flatpickr-calendar.inline{
+  position: relative;        /* keine schwebende Box */
+  width: 100%;
+  max-width: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+
+/* etwas softere Tagesfelder */
+#date-picker .flatpickr-day{ border-radius: 10px; }
+
+/* Mobile: Kanten definieren, Schatten dezenter */
+@media (max-width:740px){
+  #date-picker .flatpickr-calendar.inline{
+    box-shadow: none;
+    border: 1px solid var(--border);
+  }
+}
+#date-picker .flatpickr-calendar.inline{
+  position: relative;
+  width: 100%;
+  max-width: none;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+#date-picker .flatpickr-day{ border-radius: 10px; }
+/* falls Flatpickr dem Hidden-Input Klassen gibt: sicher verstecken */
+#res-date,
+#res-date.flatpickr-input { display: none !important; }
+
+/* Kalender hübsch im Panel */
+#date-picker .flatpickr-calendar.inline{
+  position: relative;
+  width: auto;
+  max-width: 420px;
+  border-radius: 12px;
+  box-shadow: var(--shadow, 0 8px 24px rgba(0,0,0,.12));
+  background: #fff;
+}
+#date-picker .flatpickr-day{ border-radius: 10px; }
+#date-picker .flatpickr-day.selected { font-weight: 700; }
+@media (max-width:740px){
+  #date-picker .flatpickr-calendar.inline{
+    max-width: 100%;
+    box-shadow: none;
+    border: 1px solid var(--border, #e5e7eb);
+  }
+}
+/* Bessere Lesbarkeit für den Tagesstatus unter Step 2 */
+#day-status{
+  margin-top: .35rem;
+  font-size: .95rem;           /* größer als .help */
+  line-height: 1.35;
+  color: inherit;               /* nicht grau wie .help */
+}
+#day-status .note-ok,
+#day-status .note-bad{
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .45rem .6rem;        /* „Pill“-Hintergrund */
+  border-radius: 10px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums; /* Zeiten ruhiger */
+}
+
+/* Grün: deutlich dunkler + Kontrast-Hintergrund */
+#day-status .note-ok{
+  color: #166534;                         /* dark green */
+  background: rgba(22, 101, 52, .10);
+  border: 1px solid rgba(22, 101, 52, .35);
+}
+
+/* Rot: dito */
+#day-status .note-bad{
+  color: #7f1d1d;
+  background: rgba(239, 68, 68, .10);
+  border: 1px solid rgba(239, 68, 68, .35);
+}
+/* Header vom Kalender (Monat/Jahr) klarer darstellen */
+#reserve-form .flatpickr-months{ padding: .25rem .35rem 0; }
+#reserve-form .flatpickr-current-month{
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #111;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  justify-content: center;          /* zentriert */
+}
+#reserve-form .flatpickr-current-month .cur-month{
+  padding: .15rem .45rem;
+  border-radius: 8px;
+}
+#reserve-form .flatpickr-current-month .numInput.cur-year{
+  width: 5.2ch;                      /* genug Platz für 2025 */
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .15rem .35rem;
+  font-weight: 800;
+  background: #fff;
+}
+
+/* Größere, besser klickbare Pfeile */
+#reserve-form .flatpickr-prev-month,
+#reserve-form .flatpickr-next-month{
+  width: 36px; height: 36px; border-radius: 10px;
+}
+#reserve-form .flatpickr-prev-month svg,
+#reserve-form .flatpickr-next-month svg{ fill: #111; }
 
   </style>
 </head>
@@ -990,12 +1105,14 @@ label.tos{
     <li><a href="#kontakt"    class="glass-bubble">Kontakt</a></li>
   </ul>
 
-<a href="#reservieren"
+<button
    id="open-reserve"
+   type="button"
    class="glass-bubble reserve-link"
    aria-haspopup="dialog"
-   aria-controls="reserve-modal"
-   role="button">Reservieren</a>
+   aria-controls="reserve-modal">
+  Reservieren
+</button>
 
 </nav>
 
@@ -1152,7 +1269,7 @@ label.tos{
 
     <!-- Reservierungs-Dialog (Liquid Glass) -->
 
-<div id="reservieren"></div>
+
 
 <dialog id="reserve-modal" aria-labelledby="reserve-title" aria-modal="true">
   <div class="glass-card">
@@ -1171,23 +1288,20 @@ label.tos{
     <li class="step-dot">5</li>
   </ol>
 
-  <!-- STEP 1: Datum -->
-  <div class="step-panel active" data-step="0" role="group" aria-labelledby="step1-title">
-    <h3 id="step1-title" class="section-title" style="font-size:1.15rem;margin:.25rem 0 .5rem">1) Datum wählen</h3>
-    <div class="reserve-grid">
-      <div class="f">
-        <label for="res-date">Datum*</label>
-        <input id="res-date" name="date" type="text" required inputmode="numeric" autocomplete="off">
-        <div class="help">Montag & Dienstag geschlossen</div>
-      </div>
-      <div class="f" style="grid-column:1/-1">
-        <div id="week-legend" class="week-legend" aria-label="Wochenübersicht"></div>
-      </div>
-    </div>
-    <div class="nav-row">
-      <button type="button" class="cta" data-next disabled>Weiter</button>
-    </div>
+<!-- STEP 1: Datum -->
+<div class="step-panel active" data-step="0" role="group" aria-labelledby="step1-title">
+  <h3 class="section-title">1) Datum wählen</h3>
+
+<div id="date-picker"></div>
+
+<!-- nur fürs Formular, aber unsichtbar -->
+<input id="res-date" name="date" type="hidden" required>
+
+  
+  <div class="nav-row">
+    <button type="button" class="cta" data-next disabled>Weiter</button>
   </div>
+</div>
 
   <!-- STEP 2: Uhrzeit -->
   <div class="step-panel" data-step="1" role="group" aria-labelledby="step2-title">
@@ -1198,8 +1312,7 @@ label.tos{
         <select id="res-time" name="time" required>
           <option value="" disabled selected>Bitte Datum wählen</option>
         </select>
-        <div class="help">Es werden nur verfügbare Zeitfenster angezeigt.</div>
-      </div>
+              </div>
       <div class="f" style="grid-column:1/-1">
         <div id="day-status" class="help"></div>
       </div>
@@ -1687,27 +1800,51 @@ document.addEventListener("DOMContentLoaded", () => {
   const opening = window.opening || {0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
   const isOpenDate = d => (opening[d.getDay()]||[]).length > 0;
 
-  const fp = flatpickr(resDate, {
-   static: true,
-appendTo: document.getElementById('reserve-form'),
+const resDateInput = document.getElementById('res-date');
+const datePickerHost = document.getElementById('date-picker');
+const nextBtn = document.querySelector('.step-panel[data-step="0"] [data-next]');
 
-    disableMobile: true,
-    altInput: true,
-    altFormat: "d.m.Y",
-    dateFormat: "Y-m-d",
-    minDate: "today",
-    locale: 'de',
-    disable: [ d => !isOpenDate(d) ],
-    onDayCreate(_, __, ___, dayElem){
-      const d = dayElem.dateObj;
-      dayElem.classList.add(isOpenDate(d) ? 'open' : 'closed');
-    },
-    onChange(_, dateStr){ window.fillTimesFor?.(dateStr); },
-    onReady(_, dateStr){
-      const initial = dateStr || new Date().toISOString().slice(0,10);
-      window.buildWeekLegend?.(initial);
+function nextOpenDate(start = new Date()){
+  const ONE = 86400000;
+  let d = new Date(start);
+  for (let i = 0; i < 120; i++){
+    if (window.isOpenDate ? isOpenDate(d) : true) return d;
+    d = new Date(d.getTime() + ONE);
+  }
+  return start;
+}
+
+const fp = flatpickr(resDateInput, {
+  inline: true,
+  appendTo: datePickerHost,
+  clickOpens: false,
+  allowInput: false,
+  altInput: false,          // wichtig: kein extra Anzeige-Feld
+  dateFormat: "Y-m-d",
+  disableMobile: true,
+monthSelectorType: 'dropdown',  // bessere Sichtbarkeit & Bedienbarkeit
+  minDate: "today",      
+  locale: "de",
+  // falls du Schließtage sperrst (isOpenDate):
+  disable: [ d => typeof isOpenDate === "function" ? !isOpenDate(d) : false ],
+  onDayCreate(_, __, ___, dayElem){
+    if (typeof isOpenDate === "function"){
+      dayElem.classList.toggle('closed', !isOpenDate(dayElem.dateObj));
+      dayElem.classList.toggle('open',  isOpenDate(dayElem.dateObj));
     }
-  });
+  },
+  onChange(_, dateStr){
+    resDateInput.value = dateStr;                  // Wert fürs Formular
+    if (nextBtn) nextBtn.removeAttribute('disabled');
+    if (typeof window.fillTimesFor === 'function') window.fillTimesFor(dateStr);
+  },
+  onReady(){
+    // automatisch den nächsten offenen Tag vorwählen
+    const d = nextOpenDate(new Date());
+    fp.setDate(d, true);
+  }
+});
+
 })();
 </script>
 <script>
@@ -1836,9 +1973,7 @@ function updateSummary(){
     form.addEventListener(ev, ()=> updateNextEnabled());
   });
 
-  // Auto-Weiter bei Auswahl
-  resDate?.addEventListener('change', ()=>{ if(validateStep(0)){ idx=1; show(idx); }});
-  resTime?.addEventListener('change', ()=>{ if(validateStep(1)){ idx=2; show(idx); }});
+
 
   // Initial: wenn heute vorgewählt wurde, Next aktivieren
   show(0);

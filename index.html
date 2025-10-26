@@ -113,6 +113,21 @@
   </script>
 
   <style>
+/* ganz oben in dein CSS (oder vor den mobilen Regeln) */
+:root{
+  --reserve-head-h: 56px;  /* Headerhöhe grob */
+  --steps-h: 90px;         /* Höhe der 1–5 Punkte */
+  --footer-h: 64px;        /* Höhe Button-Leiste unten */
+}
+
+/* mobile Anpassung: Fallback nicht 0px */
+@media (max-width:820px){
+  .glass-card .reserve-body{
+        padding-top: calc(var(--steps-h, 100px) + 10px) !important;
+  }
+  .wizard-steps{ min-height: var(--steps-h); }
+}
+
     :root{
       --bg:#fff; --fg:#0f172a; --muted:#64748b;
       --brand:#F7C948; --brand-ink:#7a5a00;
@@ -1478,7 +1493,7 @@ html{ scroll-padding-top: var(--header-h, 0px); }
   /* Stepper bleibt kleben */
   .wizard-steps{
     position: sticky;
-    top: var(--reserve-head-h, 56px);
+    top: -20px;
     z-index: 3;
     padding: 8px 12px;
     display: flex;
@@ -1494,7 +1509,7 @@ html{ scroll-padding-top: var(--header-h, 0px); }
   .glass-card{ display:flex; flex-direction:column; }
   .glass-card .reserve-body{
     overflow:auto;
-    padding-top: calc(var(--steps-h, 0px) + 10px) !important;
+    padding-top: calc(var(--steps-h, 100px) + 10px) !important;
     padding-bottom: calc(var(--footer-h, 64px) + env(safe-area-inset-bottom) + 10px) !important;
   }
 
@@ -1515,6 +1530,7 @@ html{ scroll-padding-top: var(--header-h, 0px); }
   /* iOS-Zoom verhindern, Felder kompakter */
   input, select, textarea{ font-size:16px; }
 }
+
   </style>
 </head>
 <body>
@@ -1715,6 +1731,7 @@ html{ scroll-padding-top: var(--header-h, 0px); }
   <div class="glass-card">
     <div class="reserve-head">
       <strong id="reserve-title">Online reservieren</strong>
+
       <button id="reserve-close" aria-label="Schliessen">×</button>
     </div>
 
@@ -2773,61 +2790,41 @@ function updateSummary(){
     try { dlg.showModal(); } catch { dlg.classList?.add('open'); }
   }, { passive:false });
 </script>
-<script>
-(function(){
-  const dlg = document.getElementById('reserve-modal');
-  const head = dlg?.querySelector('.reserve-head');
-  if(!dlg || !head) return;
 
-  function setHeadH(){
-    const h = head.offsetHeight || 0;
-    document.documentElement.style.setProperty('--reserve-head-h', h + 'px');
-  }
-  setHeadH();
-  new ResizeObserver(setHeadH).observe(head);
-  addEventListener('resize', setHeadH);
-
-  // Wenn du den Dialog per JS öffnest, gleich nochmal messen:
-  dlg.addEventListener('close', setHeadH);
-  dlg.addEventListener('cancel', setHeadH);
-})();
-</script>
 <script>
 (() => {
-  const dlg   = document.getElementById('reserve-modal');
-  if(!dlg) return;
-  const head  = dlg.querySelector('.reserve-head');
+  const dlg  = document.getElementById('reserve-modal');
+  const head = dlg?.querySelector('.reserve-head');
 
-  function px(n){ return (Math.round(n) || 0) + 'px'; }
+  function px(n){ return (Math.round(n)||0) + 'px'; }
   function visible(sel){
     return Array.from(dlg.querySelectorAll(sel)).find(el => el && el.offsetParent !== null) || null;
   }
 
-  function setLayout(){
-    // Höhe Header (Titelleiste)
-    const headH = head ? head.offsetHeight : 0;
+  function setVars(){
+    // Höhe Header (Titel)
+    const headH  = head ? head.offsetHeight : 0;
     document.documentElement.style.setProperty('--reserve-head-h', px(headH));
 
-    // Höhe Stepper (sichtbares Element)
-    const steps = visible('.wizard-steps');
+    // Höhe Stepper (sichtbar, inkl. Wrap)
+    const steps  = visible('.wizard-steps');
     const stepsH = steps ? steps.offsetHeight : 0;
     document.documentElement.style.setProperty('--steps-h', px(stepsH));
 
-    // Höhe der aktiven Footer-Buttonleiste
-    const foot = visible('.step-panel .nav-row');
-    const footH = foot ? foot.offsetHeight : 56;
+    // Höhe Footer-Buttons des aktuell sichtbaren Steps
+    const foot   = visible('.step-panel.active .nav-row') || visible('.step-panel .nav-row');
+    const footH  = foot ? foot.offsetHeight : 56;
     document.documentElement.style.setProperty('--footer-h', px(footH));
   }
 
-  // initial & bei Änderungen neu messen
-  setLayout();
-  addEventListener('resize', setLayout, {passive:true});
-  new ResizeObserver(setLayout).observe(dlg);
-
-  // Wenn sich Steps ein-/ausblenden, Klassen/hidden ändern → neu messen
-  const mo = new MutationObserver(() => requestAnimationFrame(setLayout));
-  mo.observe(dlg, {subtree:true, attributes:true, attributeFilter:['style','class','hidden']});
+  // initial, bei Größen-/Layoutänderung und beim Step-Wechsel neu messen
+  setVars();
+  addEventListener('resize', setVars, { passive:true });
+  new ResizeObserver(setVars).observe(dlg);
+  const mo = new MutationObserver(() => requestAnimationFrame(setVars));
+  mo.observe(dlg, { subtree:true, attributes:true, attributeFilter:['class','style','hidden'] });
 })();
 </script>
+
 </body>
 </html>

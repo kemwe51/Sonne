@@ -1229,20 +1229,133 @@ label.tos{
 @media (prefers-reduced-motion: reduce){
   *{ animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+/* === Logo im Nav-Reiter ======================================= */
+/* Basis übernimmt .glass-bubble (dein Liquid-Glass-Style) */
+.nav-logo { list-style: none; }
+
+/* quadratische Logo-„Tab“-Bubble */
+.logo-tab{
+  padding: 6px;                  /* kompakter als Text-Tabs */
+  aspect-ratio: 1 / 1;
+  width: clamp(36px, 5.2vw, 46px);
+  border-radius: 14px;           /* etwas runder für Logo */
+}
+
+/* Logo-Bild sauber einpassen */
+.logo-tab img{
+  display:block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;           /* nichts abschneiden */
+  border-radius: 8px;            /* minimale Abrundung im Bubble-Rahmen */
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Hover/Focus ruhig halten (kein „Lift“ nötig) */
+.logo-tab:hover{ transform:none; box-shadow: 0 6px 16px rgba(0,0,0,.12), inset 0 1px 1px rgba(255,255,255,.6); }
+.logo-tab:focus-visible{ outline: 2px solid rgba(0,0,0,.15); outline-offset: 2px; }
+
+/* Mobile etwas kleiner, damit die Reihe nicht bricht */
+@media (max-width: 900px){
+  .logo-tab{ width: clamp(32px, 7vw, 40px); padding: 5px; border-radius: 12px; }
+}
+
+/* ==== Altes Layout (Floating Bubble) neutralisieren ========= */
+/* Links war Platz für die schwebende Logo-Bubble reserviert – entfernen */
+.site-header .wrap{
+  padding-left: 0 !important;            /* war: calc(var(--bubble-size) + …) */
+  justify-content: space-between !important;
+}
+
+/* Fallback: falls irgendwo .site-header .brand gezielt ausgeblendet wurde, wieder zulassen (optional) */
+/* .site-header .brand{ display:flex !important; visibility:visible !important; } */
+/* === LOGO IM NAV-REITER (größer & responsiv) ================== */
+.nav-logo{ list-style:none }
+
+/* der Logo-Tab – spürbar größer als Text-Tabs */
+.logo-tab{
+  padding: 8px;                   /* mehr Innenabstand fürs Bild */
+  width: clamp(56px, 7.5vw, 88px);/* ← hier stellst du „groß“ ein */
+  aspect-ratio: 1/1;
+  border-radius: 16px;
+}
+.logo-tab img{
+  width:100%; height:100%; display:block; object-fit:contain; border-radius:10px;
+}
+
+/* auf sehr kleinen Screens etwas kompakter */
+@media (max-width:740px){
+  .logo-tab{ width: clamp(48px, 10vw, 64px); padding: 6px; border-radius:14px; }
+}
+
+/* === FLOATING-LOGO deaktivieren & altes Layout aufräumen ====== */
+/* Floating-Bubble komplett verstecken (war links oben fix) */
+.logo-bubble{ display:none !important; } /* war: fixed links oben. */  /* :contentReference[oaicite:2]{index=2} */
+
+/* Links reservierten Platz durch die alte Bubble entfernen */
+.site-header .wrap{
+  padding-left: 0 !important;                 /* vorher calc(var(--bubble-size)+…) */ /* :contentReference[oaicite:3]{index=3} */
+  justify-content: space-between !important;
+}
+/* === Logo nur als Bild in der Nav (ohne Bubble) =================== */
+.nav-logo{ display:flex; align-items:center; }
+
+.logo-link{
+  display:inline-flex;
+  align-items:center;
+  background:none !important;
+  box-shadow:none !important;
+  border:none !important;
+  padding:0 !important;
+  margin-right: 10px;          /* etwas Abstand zum ersten Reiter */
+  transform:none !important;   /* ggf. vorhandene Hover-Lifts neutralisieren */
+}
+.logo-link:hover{ filter:none; }
+.logo-link:focus-visible{
+  outline: 2px solid rgba(0,0,0,.18); /* dezenter Fokusrahmen */
+  outline-offset: 2px;
+}
+
+/* Bildhöhe = Reiterhöhe (visuell), Breite automatisch */
+.logo-link img{
+  display:block;
+  height: clamp(28px, 4.2vw, 40px);   /* <- bei Bedarf hier anpassen */
+  width:auto;
+  object-fit: contain;
+}
+
+/* Mobile etwas kleiner, damit die Zeile nicht bricht */
+@media (max-width: 740px){
+  .logo-link img{ height: clamp(24px, 6vw, 34px); }
+}
+
+/* falls noch die alte „floating“ .logo-bubble existiert: ausblenden */
+.logo-bubble{ display:none !important; }
+/* Sagt dem Browser: beim Scrollen zu #IDs bitte diesen Abstand freilassen */
+html{
+  scroll-behavior: smooth;
+  /* Fallback-Wert, wird von JS gleich exakt gesetzt */
+  --header-h: 96px;
+  scroll-padding-top: var(--header-h);
+}
+
+/* Extra-Schutz: jedes Element mit ID bekommt denselben Offset */
+[id]{ scroll-margin-top: var(--header-h); }
 
   </style>
 </head>
 <body>
-  <!-- FLOATING LOGO BUBBLE -->
-  <a href="#home" class="logo-bubble" aria-label="Zur Startseite">
-    <img src="logo-restaurant-sonne.png" alt="Restaurant Sonne Kölliken">
-  </a>
-  <a class="skip-link" href="#main">Zum Inhalt springen</a>
-
+  
   <header>
     <div class="wrap sitebar" role="navigation" aria-label="Hauptnavigation">
           <nav class="site-nav">
   <ul class="nav">
+<li class="nav-logo">
+  <a href="#home" class="logo-link" aria-label="Startseite">
+    <img src="logo-restaurant-sonne.png" alt="Restaurant Sonne">
+  </a>
+</li>
+
     <li><a href="#speisekarten" class="glass-bubble">Speisekarten</a></li>
     <li><a href="#galerie"    class="glass-bubble">Galerie</a></li>
     <li><a href="#kontakt"    class="glass-bubble">Kontakt</a></li>
@@ -2396,6 +2509,46 @@ function updateSummary(){
     Reservieren
   </button>
 </nav>
+<script>
+(() => {
+  // Passe den Offset dynamisch an die tatsächliche Header-Höhe an
+  const header = document.querySelector('.site-header'); // ggf. anpassen
+  const setHeaderH = () => {
+    const h = (header?.offsetHeight || 0) + 76; // kleine Luft
+    document.documentElement.style.setProperty('--header-h', h + 'px');
+  };
+  setHeaderH();
+  addEventListener('resize', setHeaderH);
+  addEventListener('orientationchange', setHeaderH);
+
+  // Auf alle internen Links (#anker) „sauberes Scrollen mit Offset“ anwenden
+  const getHeaderH = () =>
+    parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 0;
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', ev => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (!el) return;
+      ev.preventDefault();
+      const y = el.getBoundingClientRect().top + window.scrollY - getHeaderH();
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      history.pushState(null, '', '#' + id);
+    });
+  });
+
+  // Falls die Seite mit Hash geladen wurde (#speisekarten etc.), sofort korrigieren
+  window.addEventListener('load', () => {
+    if (location.hash.length > 1) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.scrollY - getHeaderH();
+        window.scrollTo({ top: y, behavior: 'auto' });
+      }
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

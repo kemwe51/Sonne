@@ -1086,6 +1086,149 @@ label.tos{
 }
 #reserve-form .flatpickr-prev-month svg,
 #reserve-form .flatpickr-next-month svg{ fill: #111; }
+/* Nav als Flex-Leiste: Links = Menüpunkte, Rechts = Reservieren */
+.site-nav{ display:flex; align-items:center; width:100%; gap:.6rem; }      /* Leiste */
+.site-nav .nav{ display:flex; gap:.6rem; flex-wrap:nowrap; }               /* Menüpunkte */
+.site-nav .reserve-link{ margin-left:auto; }                               /* ganz rechts */
+.site-header .wrap{ justify-content: space-between !important; }
+/* Premium CTA oben rechts */
+.site-header .reserve-cta{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:10px 18px;
+  border-radius:999px;
+  font-weight:800; letter-spacing:.2px;
+  text-decoration:none;
+  color:#111 !important;
+.site-header .wrap{ display:flex; align-items:center; justify-content:space-between; }
+.site-nav{ display:flex; gap:.6rem; align-items:center; flex-wrap:nowrap; }
+#open-reserve{ margin-left:auto; }
+
+  /* Gold-Glas Look */
+  background:
+    radial-gradient(120% 180% at 10% 10%, rgba(255,255,255,.85), rgba(255,255,255,.45)),
+    linear-gradient(180deg, rgba(247,201,72,.45), rgba(247,201,72,.20));
+  border:1px solid rgba(247,201,72,.55) !important;
+  box-shadow:
+    0 10px 26px rgba(0,0,0,.18),
+    0 0 0 3px rgba(247,201,72,.18),
+    inset 0 1px 1px rgba(255,255,255,.65);
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.site-header .reserve-cta:hover{
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.22),
+    0 0 0 4px rgba(247,201,72,.22),
+    inset 0 1px 1px rgba(255,255,255,.75);
+  filter: brightness(1.03);
+}
+.site-header .reserve-cta:focus-visible{
+  outline:none;
+  box-shadow:
+    0 0 0 4px rgba(247,201,72,.35),
+    inset 0 1px 1px rgba(255,255,255,.75);
+}
+
+/* kompakter auf kleineren Screens */
+@media (max-width:900px){
+  .site-header .reserve-cta{ padding:8px 14px; }
+}
+/* === Reservieren: elegantes Highlight ================================== */
+/* Basis übernimmt deine vorhandene .reserve-link (Glass + Gold) */
+
+/* sanfter Shine-Sweep, nur ab und zu */
+@keyframes ctaShine {
+  from { --shine-pos: -120%; }
+  to   { --shine-pos: 220%; }
+}
+
+/* ruhiger Hover-„Lift“ */
+@keyframes ctaLift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-1px); }
+}
+
+/* Premium-Kranz: leichtes Außen-Glühen */
+.reserve-link{
+  position: relative;
+  isolation: isolate; /* Shine liegt über dem Button-Inhalt */
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  outline-offset: 3px;
+}
+
+/* Shine-Layer */
+.reserve-link::after{
+  content:"";
+  position:absolute; inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  /* dezente diagonale Glanzbahn */
+  background:
+    linear-gradient(75deg,
+      transparent 0,
+      rgba(255,255,255,.0) calc(var(--shine-pos, -120%) - 12%),
+      rgba(255,255,255,.55) calc(var(--shine-pos, -120%)),
+      rgba(255,255,255,.0) calc(var(--shine-pos, -120%) + 12%),
+      transparent 100%);
+  opacity:.85;
+  mix-blend-mode: screen;
+  filter: blur(.2px);
+  /* Animation wird per JS nur gelegentlich getriggert */
+  animation: none;
+}
+
+/* Fokus gut sichtbar – barrierefrei */
+.reserve-link:focus-visible{
+  outline: 3px solid rgba(247,201,72,.55);
+  box-shadow:
+    0 0 0 4px rgba(247,201,72,.25),
+    0 12px 28px rgba(0,0,0,.20),
+    inset 0 1px 1px rgba(255,255,255,.75);
+}
+
+/* Hover: ganz leicht anheben (nimmt vorhandene Optik auf) */
+.reserve-link:hover{
+  animation: ctaLift .18s ease forwards;
+  filter: brightness(1.03);
+}
+
+/* „dezent wichtiger“: kleine Badge rechts oben (optional) */
+.reserve-link[data-badge]::before{
+  content: attr(data-badge);
+  position: absolute;
+  top: -6px; right: -6px;
+  font: 700 10px/1 system-ui, -apple-system, Segoe UI, Roboto, Helvetica;
+  padding: 5px 7px;
+  border-radius: 999px;
+  color:#111;
+  background:
+    radial-gradient(130% 160% at 20% 15%, rgba(255,255,255,.85), rgba(255,255,255,.45)),
+    linear-gradient(180deg, rgba(247,201,72,.55), rgba(247,201,72,.25));
+  border:1px solid rgba(247,201,72,.6);
+  box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 1px rgba(255,255,255,.75);
+}
+
+/* wenn das Dialog offen ist, Button „ruhig“ stellen */
+:has(#reserve-modal[open]) #open-reserve::after { animation: none !important; }
+
+/* Respektiere reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .reserve-link:hover{ animation: none; }
+  .reserve-link::after{ animation: none !important; }
+}
+/* Platz für die Bottom-Bar schaffen (nur sehr kleine Screens) */
+@media (max-width: 740px){
+  body{ padding-bottom: calc(64px + var(--safe-bottom)); }
+}
+
+/* Accessibility: Animationen reduzieren, wenn gewünscht */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
 
   </style>
 </head>
@@ -1104,15 +1247,23 @@ label.tos{
     <li><a href="#galerie"    class="glass-bubble">Galerie</a></li>
     <li><a href="#kontakt"    class="glass-bubble">Kontakt</a></li>
   </ul>
-
+<!-- Menü-Button (wird nur auf Mobil sichtbar) -->
 <button
-   id="open-reserve"
-   type="button"
-   class="glass-bubble reserve-link"
-   aria-haspopup="dialog"
-   aria-controls="reserve-modal">
+  id="open-drawer"
+  class="icon-btn"
+  aria-label="Menü öffnen"
+  aria-controls="mobile-drawer"
+  aria-expanded="false">☰</button>
+
+<button id="open-reserve"
+  type="button"
+  class="glass-bubble reserve-link"
+  data-badge="Neu"
+  aria-haspopup="dialog"
+  aria-controls="reserve-modal">
   Reservieren
 </button>
+
 
 </nav>
 
@@ -2088,7 +2239,7 @@ function updateSummary(){
   <script async src="//www.instagram.com/embed.js"></script>
 <script>
 (function(){
-  const link = document.querySelector('a.reserve-link');
+ 
   if(!link) return;
 
   link.addEventListener('click', function(e){
@@ -2172,6 +2323,79 @@ function updateSummary(){
     btn.textContent = oldLabel;
   });
 </script>
+<script>
+(() => {
+  const btn = document.getElementById('open-reserve');
+  if(!btn) return;
+
+  const sweep = () => {
+    // Shine einmal durchlaufen lassen (0.9s)
+    btn.style.setProperty('--shine-pos', '-120%');
+    btn.style.animation = 'none';            // reset hover-lift
+    const layer = btn;                        // ::after via CSS
+    layer.classList.add('shining');           // (optional class hook)
+    btn.style.setProperty('--shine-pos', '-120%');
+    btn.style.setProperty('--_anim','1');     // dummy to retrigger
+    btn.animate([{},{duration:0}], {duration:0}); // force style flush
+    btn.style.setProperty('--shine-pos', '220%');
+    btn.querySelector?.('::after'); // no-op, keeps engines happy
+    btn.style.setProperty('--shine-anim','running');
+    btn.style.setProperty('--shine-pos','220%');
+    // eigentliche CSS-Animation: wir simulieren über keyframes
+    btn.style.setProperty('animation','ctaLift .001s linear'); // noop
+    btn.style.setProperty('--shine-pos','220%');
+    btn.style.setProperty('--shine-anim','');
+    // echte CSS-Animation: via Web Animations auf ::after nicht möglich,
+    // daher triggern wir per class & CSS keyframes – einfacher:
+    btn.classList.add('shine-go');
+    setTimeout(()=>btn.classList.remove('shine-go'), 950);
+  };
+
+  // Shine via Klasse aktivieren (CSS greift das auf)
+  const style = document.createElement('style');
+  style.textContent = `.reserve-link.shine-go::after{ animation: ctaShine .95s ease-in-out both; }`;
+  document.head.appendChild(style);
+
+  // alle ~12–18 Sekunden, plus bei Focus/Mouseenter
+  let t = setInterval(sweep, 15000 + Math.random()*6000);
+  btn.addEventListener('mouseenter', sweep);
+  btn.addEventListener('focus', sweep);
+
+  // aufräumen, falls Dialog geöffnet wird
+  const dlg = document.getElementById('reserve-modal');
+  dlg?.addEventListener('close', () => { clearInterval(t); t = setInterval(sweep, 15000 + Math.random()*6000); });
+})();
+</script>
+<!-- Backdrop für den Drawer -->
+<div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+
+<!-- Rechte Seitenleiste als Mobile-Drawer -->
+<aside id="mobile-drawer" class="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <strong>Navigation</strong>
+    <button id="close-drawer" class="icon-btn" aria-label="Schliessen">✕</button>
+  </div>
+
+  <nav>
+    <ul class="mobile-nav">
+      <li><a href="#speisekarten" onclick="closeDrawer()">Speisekarten</a></li>
+      <li><a href="#galerie"      onclick="closeDrawer()">Galerie</a></li>
+      <li><a href="#kontakt"      onclick="closeDrawer()">Kontakt</a></li>
+      <li style="padding:12px">
+        <button id="open-reserve-hero" class="bar-btn primary" type="button" onclick="closeDrawer()">
+          Reservieren
+        </button>
+      </li>
+    </ul>
+  </nav>
+</aside>
+<!-- Schnelle Aktionen am unteren Rand (nur Mobil sichtbar) -->
+<nav class="mobile-bar" aria-label="Schnellzugriff">
+  <a class="bar-btn" href="tel:+41627231915">Anrufen</a>
+  <button class="bar-btn primary" id="open-reserve-contact" type="button">
+    Reservieren
+  </button>
+</nav>
 
 </body>
 </html>

@@ -1,35 +1,30 @@
 <!doctype html>
 <html lang="de-CH">
 <head>
+  <!-- Basics -->
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="format-detection" content="telephone=yes">
   <meta name="theme-color" content="#F7C948">
 
-  <title>Sonne Kölliken</title>
-  <meta name="description" content="Das familienfreundliche Restaurant Sonne in Kölliken: grosse Cordon bleus & gut bürgerliche Schweizer Küche. Kinderecke, Hochstühle & Terrasse. Jetzt online reservieren.">
-  <meta name="robots" content="index, follow">
+  <title>Restaurant Sonne Kölliken</title>
+  <meta name="description" content="Familienfreundliches Restaurant in Kölliken: hausgemachte Schweizer Klassiker, grosse Cordon bleus & Frühstück. Mit Kinderecke, Hochstühlen, Wickeltisch & Terrasse. Jetzt online reservieren.">
+  <meta name="keywords" content="Restaurant Kölliken, Restaurant Aargau, Gasthof Kölliken, Cordon bleu Kölliken, Schweizer Küche, Frühstück Kölliken, Familienfreundliches Restaurant, Kinderecke, Terrasse, Brunch Aargau, Mittagessen Kölliken, Abendessen Kölliken, Gruppenfeiern, Familienfeiern">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
   <!-- Canonical & hreflang -->
   <link rel="canonical" href="https://www.xn--sonne-klliken-omb.ch/">
   <link rel="alternate" hreflang="de-CH" href="https://www.xn--sonne-klliken-omb.ch/">
+  <link rel="alternate" hreflang="x-default" href="https://www.xn--sonne-klliken-omb.ch/">
+  <link rel="me" href="https://www.instagram.com/sonnekoelliken/">
 
-  <!-- Social -->
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="de_CH">
-  <meta property="og:site_name" content="Restaurant Sonne Kölliken">
-  <meta property="og:title" content="Restaurant Sonne Kölliken – Familienfreundlich & herzlich">
-  <meta property="og:description" content="Frühstück & Schweizer Klassiker – mit Kinderecke, Hochstühlen und Terrasse.">
-  <meta property="og:url" content="https://www.xn--sonne-klliken-omb.ch/">
-  <meta property="og:image" content="og-sonne.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Restaurant Sonne Kölliken – Familienfreundlich & herzlich">
-  <meta name="twitter:description" content="Frühstück & Schweizer Klassiker – mit Kinderecke, Hochstühlen und Terrasse.">
-  <meta name="twitter:image" content="og-sonne.jpg">
+  <!-- Performance: Preconnects & Preloads -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="https://www.xn--sonne-klliken-omb.ch/sonne-hero.jpg" imagesrcset="https://www.xn--sonne-klliken-omb.ch/sonne-hero.jpg 1200w" fetchpriority="high">
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
   <!-- Favicons -->
@@ -40,74 +35,139 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
 
+  <!-- Social / Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_CH">
+  <meta property="og:site_name" content="Restaurant Sonne Kölliken">
+  <meta property="og:title" content="Restaurant Sonne Kölliken">
+  <meta property="og:description" content="Frühstück & Schweizer Klassiker – mit Kinderecke, Hochstühlen und Terrasse.">
+  <meta property="og:url" content="https://www.xn--sonne-klliken-omb.ch/">
+  <meta property="og:image" content="https://www.xn--sonne-klliken-omb.ch/og-sonne.jpg">
+  <meta property="og:image:alt" content="Restaurant Sonne Kölliken – Ambiente & Terrasse">
 
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Restaurant Sonne Kölliken">
+  <meta name="twitter:description" content="Frühstück & Schweizer Klassiker – mit Kinderecke, Hochstühlen und Terrasse.">
+  <meta name="twitter:image" content="https://www.xn--sonne-klliken-omb.ch/og-sonne.jpg">
 
-  <!-- Strukturierte Daten: Restaurant + ReserveAction -->
+  <!-- UI: Flatpickr (falls Reservierungs‑Widget genutzt wird) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+
+  <!-- 1) Website mit Sitelinks SearchBox -->
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@type":"Restaurant",
-    "@id":"https://www.xn--sonne-klliken-omb.ch/#restaurant",
-    "name":"Restaurant Sonne",
-    "url":"https://www.xn--sonne-klliken-omb.ch/",
-    "image":["sonne-hero.jpg","sonne-ambiente.jpg","sonne-kinderecke.jpg"],
-    "telephone":"+41 62 723 19 15",
-    "email":"info@sonne-kölliken.ch",
-    "servesCuisine":["Schweizerisch","Burger","Cordon bleu","Frühstück"],
-    "priceRange":"CHF",
-    "address":{
-      "@type":"PostalAddress",
-      "streetAddress":"Hauptstrasse 29",
-      "postalCode":"5742",
-      "addressLocality":"Kölliken",
-      "addressCountry":"CH"
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://www.xn--sonne-klliken-omb.ch/#website",
+    "url": "https://www.xn--sonne-klliken-omb.ch/",
+    "name": "Restaurant Sonne Kölliken",
+    "inLanguage": "de-CH",
+    "sameAs": ["https://www.instagram.com/sonnekoelliken/"],
+    "keywords": "Restaurant Kölliken, Restaurant Aargau, Cordon bleu Kölliken, Schweizer Küche, Frühstück Kölliken, Familienfreundlich, Kinderecke, Terrasse",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.google.com/search?q=site%3Awww.xn--sonne-klliken-omb.ch+{search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- 2) Aktuelle Seite als WebPage (verbessert Kontext) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.xn--sonne-klliken-omb.ch/#webpage",
+    "url": "https://www.xn--sonne-klliken-omb.ch/",
+    "name": "Restaurant Sonne Kölliken – Familienfreundlich & herzlich",
+    "inLanguage": "de-CH",
+    "isPartOf": { "@id": "https://www.xn--sonne-klliken-omb.ch/#website" },
+    "about": { "@id": "https://www.xn--sonne-klliken-omb.ch/#restaurant" },
+    "primaryImageOfPage": {
+      "@type": "ImageObject",
+      "url": "https://www.xn--sonne-klliken-omb.ch/og-sonne.jpg"
     },
-    "geo":{"@type":"GeoCoordinates","latitude":47.3361391,"longitude":8.0244376},
-    "hasMap":"https://www.google.com/maps/place/Restaurant+Sonne/@47.3361391,8.0218627,590m/data=!3m2!1e3!4b1!4m6!3m5!1s0x47903b47ec4c8d19:0x4840ca9b62a69ec9!8m2!3d47.3361391!4d8.0244376!16s%2Fg%2F1tfrwdt3",
+    "description": "Familienfreundliches Restaurant in Kölliken mit Schweizer Klassikern, grossen Cordon bleus, Frühstück, Kinderecke & Terrasse.",
+    "keywords": "Restaurant Kölliken, Restaurant Aargau, Cordon bleu Kölliken, Schweizer Küche, Frühstück Kölliken, Familienfreundlich, Kinderecke, Terrasse, Brunch Aargau"
+  }
+  </script>
+
+  <!-- 3) Hauptentität: Restaurant + ReserveAction -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "@id": "https://www.xn--sonne-klliken-omb.ch/#restaurant",
+    "name": "Restaurant Sonne",
+    "url": "https://www.xn--sonne-klliken-omb.ch/",
+    "image": [
+      "https://www.xn--sonne-klliken-omb.ch/sonne-hero.jpg",
+      "https://www.xn--sonne-klliken-omb.ch/sonne-ambiente.jpg",
+      "https://www.xn--sonne-klliken-omb.ch/sonne-kinderecke.jpg"
+    ],
+    "logo": "https://www.xn--sonne-klliken-omb.ch/logo.png",
+    "telephone": "+41 62 723 19 15",
+    "servesCuisine": ["Schweizerisch","Burger","Cordon bleu","Frühstück"],
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Hauptstrasse 29",
+      "postalCode": "5742",
+      "addressLocality": "Kölliken",
+      "addressCountry": "CH"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 47.3361391,
+      "longitude": 8.0244376
+    },
+    "hasMap": "https://www.google.com/maps/place/Restaurant+Sonne/@47.3361391,8.0218627,590m/data=!3m2!1e3!4b1!4m6!3m5!1s0x47903b47ec4c8d19:0x4840ca9b62a69ec9!8m2!3d47.3361391!4d8.0244376!16s%2Fg%2F1tfrwdt3",
+    "sameAs": [
+      "https://www.instagram.com/sonnekoelliken/",
+      "https://www.google.com/maps/place/Restaurant+Sonne/@47.3361391,8.0218627,590m/data=!3m1!1e3"
+    ],
+    "amenityFeature": [
+      {"@type": "LocationFeatureSpecification", "name": "Kinderecke", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Hochstühle", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Wickeltisch", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Terrasse", "value": true}
+    ],
+    "openingHoursSpecification": [
+      {"@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "08:30", "closes": "22:00"},
+      {"@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday",  "opens": "08:30", "closes": "22:00"},
+      {"@type": "OpeningHoursSpecification", "dayOfWeek": "Friday",    "opens": "08:30", "closes": "23:00"},
+      {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday",  "opens": "17:30", "closes": "23:00"},
+      {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday",    "opens": "09:00", "closes": "21:00"}
+    ],
     "acceptsReservations": true,
-    "potentialAction":{
-      "@type":"ReserveAction",
-      "target":{
-        "@type":"EntryPoint",
-        "urlTemplate":"https://www.xn--sonne-klliken-omb.ch/#reservieren",
-        "inLanguage":"de-CH",
-        "actionPlatform":[
+    "potentialAction": {
+      "@type": "ReserveAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.xn--sonne-klliken-omb.ch/#reservieren",
+        "inLanguage": "de-CH",
+        "actionPlatform": [
           "http://schema.org/DesktopWebPlatform",
           "http://schema.org/AndroidPlatform",
           "http://schema.org/IOSPlatform"
         ]
       },
-      "result":{"@type":"FoodEstablishmentReservation","name":"Tischreservierung"}
+      "result": {"@type": "FoodEstablishmentReservation", "name": "Tischreservierung"}
     },
-    "sameAs":["https://www.instagram.com/sonnekoelliken/"],
-    "owner":{"@type":"Person","name":"Sultan Bal","jobTitle":"Geschäftsführerin"},
-    "amenityFeature":[
-      {"@type":"LocationFeatureSpecification","name":"Kinderecke","value":true},
-      {"@type":"LocationFeatureSpecification","name":"Hochstühle","value":true},
-      {"@type":"LocationFeatureSpecification","name":"Wickeltisch","value":true},
-      {"@type":"LocationFeatureSpecification","name":"Terrasse","value":true}
-    ],
-    "openingHoursSpecification":[
-      {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday"],"opens":"00:00","closes":"00:00"},
-      {"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"08:30","closes":"22:00"},
-      {"@type":"OpeningHoursSpecification","dayOfWeek":"Thursday","opens":"08:30","closes":"22:00"},
-      {"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"08:30","closes":"23:00"},
-      {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"17:30","closes":"23:00"},
-      {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"09:00","closes":"21:00"}
-    ]
+    "owner": {"@type": "Person", "name": "Sultan Bal", "jobTitle": "Geschäftsführerin"}
   }
-
   </script>
 
-  <!-- Strukturierte Daten: FAQ -->
+  <!-- 4) Breadcrumbs (auch für Home sinnvoll) -->
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {"@type":"Question","name":"Sind Kinder willkommen?","acceptedAnswer":{"@type":"Answer","text":"Ja! Es gibt Kinderecke, Hochstühle, Malsets und einen Wickeltisch."}},
-      {"@type":"Question","name":"Wie reserviere ich einen Tisch?","acceptedAnswer":{"@type":"Answer","text":"Online über den Reservieren-Button (WhatsApp oder E-Mail) – oder telefonisch unter +41 62 723 19 15."}},
-      {"@type":"Question","name":"Gibt es Parkplätze in der Nähe?","acceptedAnswer":{"@type":"Answer","text":"In der Umgebung der Hauptstrasse 29 in 5742 Kölliken sind öffentliche Parkmöglichkeiten vorhanden."}}
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": "https://www.xn--sonne-klliken-omb.ch/#breadcrumbs",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://www.xn--sonne-klliken-omb.ch/"}
     ]
   }
   </script>

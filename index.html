@@ -932,6 +932,45 @@ display:grid; place-items:center;
   .menu-button{ padding: 14px 16px; }
   .menu-ico{ width: 38px; height: 38px; font-size: 20px; }
 }
+/* === FIX: Checkbox/Radio wieder sichtbar anhaken === */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea{
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: .75rem .8rem;
+  font: inherit;
+  background: #fff;
+}
+
+/* Checkboxen & Radios: native Darstellung + klare Farbe */
+input[type="checkbox"],
+input[type="radio"]{
+  appearance: auto;
+  -webkit-appearance: auto;
+  width: 18px;
+  height: 18px;
+  margin-right: .5rem;
+  vertical-align: middle;
+  accent-color: #111;   /* passt zum Design */
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible{
+  outline: 2px solid #e5e7eb;
+  outline-offset: 2px;
+}
+
+/* Checkbox-Label sauber ausrichten (optional) */
+label.tos{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
 
   </style>
 </head>
@@ -1309,14 +1348,12 @@ display:grid; place-items:center;
     // Reservierungs-Modal öffnen
     const reserveModal = document.getElementById('reserve-modal');
 // Reservierungs-Modal: Schliessen beim Klick ausserhalb
-reserveModal.addEventListener('click', (e)=>{
-  const r = reserveModal.getBoundingClientRect();
-  const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-  if(!inside){
+reserveModal.addEventListener('click', (e) => {
+  // Bei Klick auf die Backdrop-Fläche ist das Event-Target das <dialog> selbst
+  if (e.target === reserveModal) {
     reserveModal.close();
   }
 });
-
    ['open-reserve','open-reserve-hero','open-reserve-contact'].forEach(id=>{
   const el = document.getElementById(id);
   if(!el) return;

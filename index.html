@@ -2316,11 +2316,10 @@ monthSelectorType: 'dropdown',  // bessere Sichtbarkeit & Bedienbarkeit
     if (nextBtn) nextBtn.removeAttribute('disabled');
     if (typeof window.fillTimesFor === 'function') window.fillTimesFor(dateStr);
   },
-  onReady(){
-    // automatisch den nächsten offenen Tag vorwählen
-    const d = nextOpenDate(new Date());
-    fp.setDate(d, true);
-  }
+ onReady(selectedDates, dateStr, instance){
+  const d = nextOpenDate(new Date());
+  instance.setDate(d, true);
+}
 });
 
 })();
@@ -2489,27 +2488,38 @@ function updateSummary(){
 // --- Kontaktart-Auswahl ---
 (function(){
   const form = document.getElementById('reserve-form');
+  if(!form) return;
+
+  // Inputs aus dem Markup:
+  const phoneInput = document.getElementById('phone');
+  const emailInput = document.getElementById('email');
+  const phoneWrap  = phoneInput?.closest('.f') || phoneInput?.parentElement;
+  const emailWrap  = emailInput?.closest('.f') || emailInput?.parentElement;
+
+  // Optional: Radios (falls später hinzugefügt). Wenn es keine gibt, beides anzeigen.
   const contactRadios = form.querySelectorAll('input[name="contactType"]');
-  const phoneWrap = document.getElementById('contact-phone');
-  const emailWrap = document.getElementById('contact-email');
-  const phoneInput = document.getElementById('res-phone');
-  const emailInput = document.getElementById('res-email');
 
   function toggleContact(){
+    if(!phoneWrap || !emailWrap || contactRadios.length === 0){
+      // Keine Radios vorhanden -> beides sichtbar & beide nicht zwingend
+      phoneWrap?.classList.remove('hide');
+      emailWrap?.classList.remove('hide');
+      if (phoneInput) phoneInput.required = false;
+      if (emailInput) emailInput.required = false;
+      return;
+    }
     const sel = form.querySelector('input[name="contactType"]:checked')?.value;
     phoneWrap.classList.toggle('hide', sel !== 'phone');
     emailWrap.classList.toggle('hide', sel !== 'email');
-
-    // required toggeln
-    phoneInput.required = sel === 'phone';
-    emailInput.required = sel === 'email';
+    if (phoneInput) phoneInput.required = sel === 'phone';
+    if (emailInput) emailInput.required = sel === 'email';
   }
 
-  contactRadios.forEach(r=>r.addEventListener('change', toggleContact));
+  contactRadios.forEach(r => r.addEventListener('change', toggleContact));
   toggleContact(); // initial
 })();
-
 </script>
+
 <script>
   // Mobile Drawer
   const drawer = document.getElementById('mobile-drawer');
@@ -2553,27 +2563,22 @@ function updateSummary(){
   <script async src="//www.instagram.com/embed.js"></script>
 <script>
 (function(){
- 
+  const link = document.getElementById('open-reserve') 
+             || document.querySelector('[data-reserve], .js-open-reserve, a[href*="reserv"]');
   if(!link) return;
 
   link.addEventListener('click', function(e){
-    // 1) Ziel-Anchor scrollen, wenn vorhanden
     const target = document.getElementById('reservieren') || document.querySelector('#kontakt');
     if (target) {
       e.preventDefault();
-      const y = target.getBoundingClientRect().top + window.pageYOffset - 80; // offset
+      const y = target.getBoundingClientRect().top + window.pageYOffset - 80;
       window.scrollTo({ top: y, behavior: 'smooth' });
       return;
     }
-    // 2) Fallback: vorhandenen CTA triggern (falls du sowas hast)
     const cta = document.querySelector('[data-reserve], .js-reserve, a[href*="reserv"]');
-    if (cta) {
-      e.preventDefault();
-      cta.click();
-    }
+    if (cta) { e.preventDefault(); cta.click(); }
   });
 
-  // komfortableres Scroll-Ziel für alle Sektionen
   document.querySelectorAll('section, [id]').forEach(el=>{
     el.style.scrollMarginTop = '90px';
   });
@@ -2818,11 +2823,14 @@ function updateSummary(){
   }
 
   // initial, bei Größen-/Layoutänderung und beim Step-Wechsel neu messen
-  setVars();
+    setVars();
   addEventListener('resize', setVars, { passive:true });
-  new ResizeObserver(setVars).observe(dlg);
-  const mo = new MutationObserver(() => requestAnimationFrame(setVars));
-  mo.observe(dlg, { subtree:true, attributes:true, attributeFilter:['class','style','hidden'] });
+
+  if (dlg) {                      // <— Guard
+    new ResizeObserver(setVars).observe(dlg);
+    const mo = new MutationObserver(() => requestAnimationFrame(setVars));
+    mo.observe(dlg, { subtree:true, attributes:true, attributeFilter:['class','style','hidden'] });
+  }
 })();
 </script>
 

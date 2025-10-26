@@ -173,14 +173,14 @@
   </script>
 
   <style>
-/* ganz oben in dein CSS (oder vor den mobilen Regeln) */
+
 :root{
-  --reserve-head-h: 56px;  /* Headerhöhe grob */
-  --steps-h: 90px;         /* Höhe der 1–5 Punkte */
-  --footer-h: 64px;        /* Höhe Button-Leiste unten */
+  --reserve-head-h: 56px;  
+  --steps-h: 90px;        
+  --footer-h: 64px;        
 }
 
-/* mobile Anpassung: Fallback nicht 0px */
+
 @media (max-width:820px){
   .glass-card .reserve-body{
         padding-top: calc(var(--steps-h, 100px) + 10px) !important;
@@ -206,24 +206,20 @@
 
     header{position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--border);z-index:50}
     .sitebar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 0;gap:1rem}
-    /* Brand-Container kann bleiben */
+   
 .brand{display:flex;align-items:center;gap:.75rem;font-weight:700}
-
-/* GRÖSSERES Logo – responsive mit clamp */
 .brand-logo{
   height: clamp(48px, 8vw, 84px);
   width: auto;
   display: block;
   border-radius: 0;
-  image-rendering: -webkit-optimize-contrast; /* schärfer bei dünnen Linien */
+  image-rendering: -webkit-optimize-contrast; 
 }
-
-/* kleine Screens: etwas kompakter */
 @media (max-width:740px){
   .brand-logo{ height: clamp(40px, 12vw, 56px); }
 }
 
-/* Header-Padding leicht erhöhen, damit nichts gequetscht wirkt */
+
 .site-header{ padding-top: 10px; padding-bottom: 10px; }
 
 
@@ -235,7 +231,7 @@
     .cta:hover{text-decoration:none;filter:brightness(1.05)}
     .cta.secondary{background:#fff;color:#111;border-color:var(--border)}
 
-    /* Hero */
+    
     .hero{padding:4rem 0 2rem;background:linear-gradient(180deg,#fff 0%,#fff8e7 100%)}
     .hero-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:2rem;align-items:center}
     .eyebrow{display:inline-block;background:var(--card);color:var(--brand-ink);border:1px solid #ffe2a8;padding:.35rem .6rem;border-radius:999px;font-weight:800;letter-spacing:.01em}
@@ -253,7 +249,6 @@
     address{font-style:normal;line-height:1.6}
     footer{border-top:1px solid var(--border);padding:1.25rem 0;color:var(--muted)}
 
-    /* Speisekarte-Karten + PDF-Modal */
     .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
     .menu-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow);text-align:center}
     .menu-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.1rem;border-radius:12px;border:1px solid var(--border);background:#111;color:#fff;font-weight:700;box-shadow:var(--shadow);cursor:pointer}
@@ -262,8 +257,6 @@
     dialog#pdf-modal::backdrop{background:rgba(0,0,0,.35)}
     .modal-head{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-bottom:1px solid var(--border);background:#fff;border-top-left-radius:16px;border-top-right-radius:16px}
     #pdf-frame{width:100%;height:calc(100% - 56px);border:0;border-bottom-left-radius:16px;border-bottom-right-radius:16px}
-
-    /* Reservierungs-Modal */
     dialog#reserve-modal{width:min(860px,94vw);border:none;border-radius:18px;padding:0;box-shadow:var(--shadow)}
     dialog#reserve-modal::backdrop{background:rgba(2,6,23,.45)}
     .reserve-head{display:flex;gap:1rem;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border);background:#fff7e6;border-top-left-radius:18px;border-top-right-radius:18px}
@@ -282,36 +275,29 @@
     .chip{border:1px dashed var(--border);border-radius:999px;padding:.3rem .6rem;font-size:.85rem}
     .toast{position:fixed;inset:auto 1rem 1rem auto;background:#0f172a;color:#fff;padding:.8rem 1rem;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:all .25s ease;z-index:60}
     .toast.show{opacity:1;transform:translateY(0)}
-
-    /* Mobile */
     @media (max-width:980px){
       .hero-grid{grid-template-columns:1fr}
       nav ul{display:none}
       .menu-grid,.grid-3,.grid-2{grid-template-columns:1fr}
       .reserve-grid{grid-template-columns:1fr}
     }
-
-    /* Floating CTA (mobile) */
     .floating-cta{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);z-index:40}
     .floating-cta .cta{border-radius:999px;padding:.9rem 1.2rem}
-/* Liquid-Glass für das Reservierungs-Popup */
 dialog#reserve-modal{
   width:min(860px,94vw);
   border:none;
-  padding:0;                  /* Glas-Karte übernimmt Padding */
-  background:transparent;     /* wichtig für Glas-Optik */
+  padding:0;                 
+  background:transparent;    
 }
 dialog#reserve-modal::backdrop{
   background:rgba(4, 6, 20, .55);
-  backdrop-filter: blur(10px) saturate(120%); /* weich + modern */
+  backdrop-filter: blur(10px) saturate(120%); 
 }
-
-/* Die Glas-Karte im Dialog */
 .glass-card{
   position: relative;
   margin: 2.2rem;
   border-radius: 22px;
-  padding: 0;                 /* Header/Body haben ihr eigenes Padding */
+  padding: 0;            
   background: radial-gradient(120% 140% at 10% 10%, rgba(255,255,255,.18), rgba(255,255,255,.08)) ,
               linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
   border: 1px solid rgba(255,255,255,.35);
@@ -323,8 +309,6 @@ dialog#reserve-modal::backdrop{
   -webkit-backdrop-filter: blur(16px) saturate(170%);
   overflow: clip;
 }
-
-/* dezent „liquid“ Dekoblobs */
 .glass-card::before,
 .glass-card::after{
   content:"";
@@ -343,8 +327,6 @@ dialog#reserve-modal::backdrop{
   bottom:-80px; right:-40px;
   background: radial-gradient(closest-side, rgba(247,201,72,.55), rgba(247,201,72,0));
 }
-
-/* Kopf- und Body-Bereiche im Glas */
 .glass-card .reserve-head{
   display:flex;gap:1rem;align-items:center;justify-content:space-between;
   padding:1rem 1.25rem;
@@ -354,8 +336,6 @@ dialog#reserve-modal::backdrop{
 .glass-card .reserve-body{
   padding:1rem 1.25rem 1.25rem;
 }
-
-/* Kontraste auf Feldern im Glas */
 .glass-card input,
 .glass-card select,
 .glass-card textarea{
@@ -369,8 +349,6 @@ dialog#reserve-modal::backdrop{
   outline: 3px solid rgba(247,201,72,.35);
   border-color:#111;
 }
-
-/* CTA-Kontrast auf Glas */
 .glass-card .cta{
   background:#111; color:#fff; border-color: rgba(255,255,255,.45);
 }
@@ -378,16 +356,14 @@ dialog#reserve-modal::backdrop{
   background:rgba(255,255,255,.85);
   border-color:rgba(0,0,0,.08);
 }
-/* Galerie: einheitliche Bildkacheln */
 #galerie .grid-3 img{
   width: 100%;
-  aspect-ratio: 1 / 1;   /* quadratische Kacheln */
-  height: auto;           /* wird aus aspect-ratio berechnet */
-  object-fit: cover;      /* füllt die Kachel, ohne zu verzerren */
+  aspect-ratio: 1 / 1;  
+  height: auto;          
+  object-fit: cover;     
   object-position: center;
   display: block;
 }
-/* PDF dialog: edge-to-edge, no chrome */
 #pdf-modal{
   position: fixed;
   inset: 0;
@@ -399,8 +375,6 @@ dialog#reserve-modal::backdrop{
   max-height: none;
 }
 #pdf-modal::backdrop{ background: transparent; }
-
-/* iframe fills the whole viewport */
 #pdf-frame{
   position: fixed;
   inset: 0;
@@ -409,8 +383,6 @@ dialog#reserve-modal::backdrop{
   border: 0;
   display: block;
 }
-
-/* optional: small round close button */
 #pdf-close-fab{
   position: fixed;
   top: 12px; right: 12px;
@@ -421,21 +393,14 @@ dialog#reserve-modal::backdrop{
   cursor: pointer; opacity: .7;
 }
 #pdf-close-fab:hover{ opacity: 1; }
-
-/* lock page scroll while dialog is open */
 body.no-scroll{ overflow: hidden; }
-
-/* --- Reservieren: Wochentags-Übersicht & Status --- */
 .week-legend{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.25rem}
 .day-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .6rem;border-radius:999px;border:1px dashed var(--border);font-size:.85rem;white-space:nowrap}
 .day-chip .hours{font-weight:700}
 .day-chip.closed{border-color:#fecaca;background:#fef2f2;color:#991b1b}
 .day-chip.open{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
 .day-chip.today{outline:2px solid rgba(0,0,0,.15)}
-/* Date-Feld rot einfassen, wenn geschlossener Tag gewählt */
 input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4444}
-
-/* Flatpickr: offene/geschlossene Tage einfärben */
 .flatpickr-day.open{background:#f0fdf4;border-color:#bbf7d0;color:#166534}
 .flatpickr-day.closed{background:#fef2f2;border-color:#fecaca;color:#991b1b}
 #reserve-form .flatpickr-day.disabled,
@@ -446,7 +411,6 @@ input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4
   border-color: #e5e7eb !important;
   cursor: not-allowed;
 }.flatpickr-calendar{ z-index: 100000; }
-/* --- Reservierungs-Wizard (Step-by-Step) --- */
 .wizard-steps{display:flex;gap:.5rem;align-items:center;margin:0 0 .75rem 0;padding:0;list-style:none}
 .wizard-steps .step-dot{
   width:30px;height:30px;border-radius:999px;display:grid;place-items:center;
@@ -465,31 +429,21 @@ input#res-date.is-closed{outline:3px solid rgba(239,68,68,.35);border-color:#ef4
 .summary-card dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:.35rem .8rem}
 .summary-card dt{font-weight:700}
 .summary-card dd{margin:0}
-/* Flatpickr über dem Modal/Backdrop halten */
 .flatpickr-calendar { z-index: 100001 !important; }
-/* ein-/ausblenden für bedingte Felder */
 .hide{display:none !important;}
 :root {
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
-
-/* Header sticky + mobile Nav-Schalter */
 header{position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid #e2e8f0;z-index:50}
 .icon-btn{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;color:#111;font-weight:800}
-
-/* Baseline Typografie auf Mobil */
 h1{font-size:clamp(1.8rem, 5.5vw, 3rem);line-height:1.15}
 .lead{font-size:clamp(1rem, 3.8vw, 1.125rem)}
-
-/* Grids einkolumnig auf Mobil */
 @media (max-width:980px){
   .hero{padding:2rem 0 1rem}
   .hero-grid,.grid-3,.grid-2,.menu-grid{display:grid;grid-template-columns:1fr;gap:1rem}
   nav ul{display:none}
   .icon-btn{display:inline-flex}
 }
-
-/* Drawer Navigation (Mobil) */
 .drawer-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.42);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:60}
 .drawer-backdrop.show{opacity:1;pointer-events:auto}
 .drawer{position:fixed;inset:0 0 0 auto;width:min(86vw,360px);background:#fff;border-left:1px solid #e2e8f0;box-shadow:-10px 0 30px rgba(2,6,23,.08);transform:translateX(100%);transition:transform .25s ease;z-index:61;display:flex;flex-direction:column}
@@ -498,41 +452,29 @@ h1{font-size:clamp(1.8rem, 5.5vw, 3rem);line-height:1.15}
 .mobile-nav{list-style:none;margin:0;padding:0}
 .mobile-nav a{display:block;padding:1rem 1.25rem;border-bottom:1px solid #e2e8f0;color:#111;font-weight:700;text-decoration:none}
 .mobile-nav a:hover{background:#fffef8}
-
-/* Bottom Action Bar (nur kleine Screens) */
 .mobile-bar{position:fixed;left:0;right:0;bottom:0;padding:.5rem 12px calc(.5rem + var(--safe-bottom));background:rgba(255,255,255,.98);border-top:1px solid #e2e8f0;display:none;gap:.5rem;z-index:55}
 .bar-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;padding:0.9rem 1rem;border-radius:999px;border:1px solid #e2e8f0;background:#fff;font-weight:800;text-decoration:none;min-height:48px}
 .bar-btn.primary{background:#111;color:#fff;border-color:#111}
 @media (max-width:740px){ .mobile-bar{display:flex} }
-
-/* Große Tap-Targets allgemein */
 a.button, .cta, button, .menu-btn { min-height:48px; padding:.85rem 1rem; border-radius:12px }
-
-/* Galerie-Kacheln, die auf Mobil gut laden */
 #galerie .grid-3 img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border-radius:12px}
-
-/* PDF-Dialog als Fullscreen (komfortabel auf Handy) */
 #pdf-modal{position:fixed;inset:0;margin:0;padding:0;border:0;background:transparent;max-width:none;max-height:none}
 #pdf-modal::backdrop{background:transparent}
 #pdf-frame{position:fixed;inset:0;width:100vw;height:100vh;border:0;display:block}
 #pdf-close-fab{position:fixed;top:12px;right:12px;width:36px;height:36px;border:0;border-radius:9999px;background:rgba(0,0,0,.35);color:#fff;font:700 20px/36px system-ui;cursor:pointer;opacity:.7}
 #pdf-close-fab:hover{opacity:1}
 body.no-scroll{overflow:hidden}
-/* Floating "liquid glass" bubble links oben */
 .logo-bubble{
   position: fixed;
   top: 14px;
   left: 14px;
   z-index: 9999;
-
   display: grid;
   place-items: center;
-
-  width: clamp(72px, 10vw, 120px);  /* Größe des Bubbles */
+  width: clamp(72px, 10vw, 120px);
   aspect-ratio: 1 / 1;
   padding: clamp(6px, 1.2vw, 12px);
-
-  border-radius: 26px 22px 28px 24px / 24px 28px 22px 26px; /* organische Bubble-Form */
+  border-radius: 26px 22px 28px 24px / 24px 28px 22px 26px;
   background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
   border: 1px solid rgba(255,255,255,.35);
   box-shadow:
@@ -542,15 +484,12 @@ body.no-scroll{overflow:hidden}
   backdrop-filter: blur(8px) saturate(160%);
   -webkit-backdrop-filter: blur(8px) saturate(160%);
 }
-
 .logo-bubble img{
   width: 100%;
   height: auto;
   display: block;
   filter: drop-shadow(0 1px 0 rgba(0,0,0,.08));
 }
-
-/* Bubble etwas kleiner auf sehr schmalen Screens */
 @media (max-width: 640px){
   .logo-bubble{
     width: clamp(60px, 18vw, 84px);
@@ -559,41 +498,28 @@ body.no-scroll{overflow:hidden}
     border-radius: 22px;
   }
 }
-
-/* Fallback falls kein backdrop-filter unterstützt wird */
 @supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))){
   .logo-bubble{ background: rgba(255,255,255,.85); }
 }
-
-/* Header-Brand im Navbar ausblenden, damit es nicht doppelt erscheint */
 .logo-bubble ~ .site-header .brand{
   visibility: hidden;
   width: 0;
   margin: 0;
   padding: 0;
 }
-/* =========================================================
-   Floating Logo Bubble (größer + näher am Text)
-   ========================================================= */
 :root{
-  /* -> Größe der Bubble: Desktop deutlich größer */
   --bubble-size: clamp(150px, 10vw, 230px);
 }
-
 .logo-bubble{
   position: fixed;
   top: 12px;
   left: 12px;
   z-index: 9999;
-
   display: grid;
   place-items: center;
-
   width: var(--bubble-size);
   aspect-ratio: 1 / 1;
   padding: clamp(8px, 1.2vw, 14px);
-
-  /* organische „liquid glass“ Optik */
   border-radius: 28px;
   background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
   border: 1px solid rgba(255,255,255,.35);
@@ -601,38 +527,27 @@ body.no-scroll{overflow:hidden}
   backdrop-filter: blur(8px) saturate(160%);
   -webkit-backdrop-filter: blur(8px) saturate(160%);
 }
-
 .logo-bubble img{
   width: 100%;
   height: auto;
   display: block;
   filter: drop-shadow(0 1px 0 rgba(0,0,0,.08));
 }
-
-/* Mobile etwas kleiner, damit es nicht ins Layout grätscht */
 @media (max-width: 640px){
   :root{ --bubble-size: clamp(90px, 22vw, 120px); }
   .logo-bubble{ top: 10px; left: 10px; }
 }
-
-/* =========================================================
-   Navbar-Logo vollständig ausblenden
-   ========================================================= */
 .site-header .brand{
-  display: none !important; /* entfernt Logo/Brand im Header */
+  display: none !important;
 }
-/* ====== NAV: Liquid Glass Bubbles ====== */
 .site-header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
 .site-nav .nav{ display:flex; gap:.6rem; align-items:center; margin:0; padding:0; }
 .site-nav .nav li{ list-style:none; }
-
-/* Grundstil für alle Nav-Buttons */
 .glass-bubble{
   display:inline-flex; align-items:center; justify-content:center;
   padding: 10px 16px;
   border-radius: 18px;
   text-decoration:none; font-weight:700; letter-spacing:.2px; color:#111;
-
   background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
   border: 1px solid rgba(255,255,255,.35);
   box-shadow: 0 6px 16px rgba(0,0,0,.12), inset 0 1px 1px rgba(255,255,255,.6);
@@ -640,73 +555,56 @@ body.no-scroll{overflow:hidden}
   -webkit-backdrop-filter: blur(8px) saturate(160%);
   transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
 }
-
 .glass-bubble:hover{ transform: translateY(-1px); box-shadow: 0 12px 28px rgba(0,0,0,.16), inset 0 1px 1px rgba(255,255,255,.65); }
 .glass-bubble:active{ transform: translateY(0); }
 .glass-bubble:focus-visible{ outline: 2px solid rgba(0,0,0,.2); outline-offset: 2px; }
-
-/* „Reservieren“ etwas prominenter */
 .reserve-link{
   background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.35));
   box-shadow: 0 10px 26px rgba(0,0,0,.18), 0 0 0 4px rgba(0,0,0,.03), inset 0 1px 1px rgba(255,255,255,.65);
   border: 1px solid rgba(0,0,0,.08);
 }
-
-/* Mobile kompakter */
 @media (max-width: 900px){
   .glass-bubble{ padding: 8px 12px; font-weight:600; }
   .site-nav .nav{ gap:.4rem; }
 }
-
-/* Falls das alte schwarze Button-Design noch greift – überschreiben */
 .site-header a.button,
 .site-header .button.primary{
   background: none !important; color: #111 !important; box-shadow: none !important; border: 0 !important;
   padding: 0 !important; border-radius: 0 !important;
 }
-/* ===== Floating Logo-Bubble bleibt wie besprochen ===== */
 :root{
   --bubble-size: clamp(150px, 10vw, 230px);
 }
-
-/* ===== Header ohne Hintergrundleiste ===== */
 .site-header{
   background: transparent !important;
   box-shadow: none !important;
   border: 0 !important;
 }
 .site-header::before{ display:none !important; }
-
-/* Platz rechts neben der Logo-Bubble schaffen */
 .site-header .wrap{
   display: flex;
   align-items: center;
-  justify-content: center; /* zentriert die Nav mittig */
+  justify-content: center;
   padding-left: calc(var(--bubble-size) + 24px);
 }
-
-/* ===== NAV als schwebende Bubbles nebeneinander ===== */
 .site-nav{ display:flex; align-items:center; gap:.75rem; background:none; border:0; box-shadow:none; }
 .site-nav .nav{
   display:flex;
-  flex-wrap: nowrap;     /* alles in einer Reihe */
+  flex-wrap: nowrap;   
   gap:.6rem;
   align-items:center;
   margin:0; padding:0;
   list-style:none;
-  overflow-x:auto;       /* wenn’s eng wird, sanft scrollen */
+  overflow-x:auto;      
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
 .site-nav .nav::-webkit-scrollbar{ display:none; }
-
-/* Grundstil für einzelne Bubbles */
 .glass-bubble{
   display:inline-flex; align-items:center; justify-content:center;
   padding: 10px 16px;
   border-radius: 18px;
   text-decoration:none; font-weight:700; letter-spacing:.2px; color:#111;
-
   background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.25));
   border: 1px solid rgba(0,0,0,.08);
   box-shadow: 0 6px 16px rgba(0,0,0,.12), inset 0 1px 1px rgba(255,255,255,.6);
@@ -717,20 +615,14 @@ body.no-scroll{overflow:hidden}
 .glass-bubble:hover{ transform: translateY(-1px); box-shadow: 0 12px 28px rgba(0,0,0,.16), inset 0 1px 1px rgba(255,255,255,.65); }
 .glass-bubble:active{ transform: translateY(0); }
 .glass-bubble:focus-visible{ outline: 2px solid rgba(0,0,0,.2); outline-offset: 2px; }
-
-/* Reservieren etwas prominenter */
 .reserve-link{
   background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.35));
   box-shadow: 0 10px 26px rgba(0,0,0,.18), 0 0 0 4px rgba(0,0,0,.03), inset 0 1px 1px rgba(255,255,255,.65);
 }
-
-/* Auf kleineren Screens: kompakter, aber weiterhin nebeneinander (scrollbar) */
 @media (max-width: 900px){
   .glass-bubble{ padding: 8px 12px; font-weight:600; }
   .site-header .wrap{ padding-left: calc(var(--bubble-size) + 16px); }
 }
-
-/* Altes Button-/Leisten-Design der Nav sicher überschreiben */
 .site-header a.button,
 .site-header .button.primary,
 .site-nav, .site-nav *{
@@ -738,90 +630,71 @@ body.no-scroll{overflow:hidden}
   border: 0 !important;
   box-shadow: none !important;
 }
-/* ===== HERO: Layout & Typo ===== */
 .hero{
   padding: clamp(28px, 4vw, 48px) 0 clamp(40px, 6vw, 72px);
   background: linear-gradient(180deg, rgba(255,248,242,.6), rgba(255,248,242,0));
 }
-
 .hero-grid{
   display: grid;
-  grid-template-columns: minmax(320px, 1fr) minmax(360px, 1.1fr); /* Text | Bild */
+  grid-template-columns: minmax(320px, 1fr) minmax(360px, 1.1fr);
   align-items: center;
   gap: clamp(16px, 3vw, 36px);
 }
-
 .hero-text h1{
   font-size: clamp(2rem, 4.2vw, 3.2rem);
   line-height: 1.1;
   margin: 0 0 .6rem 0;
 }
-
 .hero-lead{
   font-size: clamp(1.02rem, 1.5vw, 1.125rem);
   color: #415466;
   max-width: 60ch;
 }
 .hero-cta{ display:flex; gap:.75rem; margin-top: 1rem; flex-wrap: wrap; }
-
-/* ===== HERO: Bild-Container ===== */
 .hero-media{
   margin: 0;
   border-radius: 22px;
   overflow: clip;
-  /* sanfte „Card“-Wirkung passend zu deinen Bubbles */
   box-shadow: 0 18px 38px rgba(0,0,0,.12);
   background: #eee;
-  /* sorgt für ruhigen Crop, egal wie das Bild geschnitten ist */
   aspect-ratio: 4 / 3;
   display: grid;
 }
-
 .hero-media > img{
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 45%; /* bei Bedarf anpassen (Fokuspunkt) */
+  object-position: 50% 45%;
   display: block;
 }
-
-/* ===== RESPONSIVE ===== */
 @media (max-width: 960px){
   .hero-grid{
-    grid-template-columns: 1fr;     /* untereinander */
+    grid-template-columns: 1fr;
   }
   .hero-media{
-    order: 2;                        /* Text zuerst, Bild danach */
+    order: 2;
     aspect-ratio: 16 / 10;
     border-radius: 18px;
   }
 }
-
-/* Falls alte Hero-Styles existieren, die stören, bitte neutralisieren: */
 #home .hero-img,
 #home .hero-image,
 #home .sun-hero,
 #home img[alt*="sonne-hero"]{
   display: none !important;
 }
-/* ===== Full-bleed Hero (quer, über komplette Breite) ===== */
 :root{
-  /* deine Bubble-Größe lassen wir bestehen */
   --bubble-size: clamp(150px, 10vw, 230px);
 }
-
-/* Der Abschnitt selbst wird über die Viewport-Breite „aus der Seite gezogen“ */
 .hero-bleed{
   position: relative;
-  margin-inline: calc(50% - 50vw);   /* volle Breite, unabhängig vom .wrap */
+  margin-inline: calc(50% - 50vw);
   width: 100vw;
   min-height: clamp(58vh, 68vh, 82vh);
   display: grid;
   place-items: center start;
-  isolation: isolate;                 /* saubere Layer-Reihenfolge */
+  isolation: isolate;
 }
-
-/* Hintergrundbild */
 .hero-bg{
   position: absolute; inset: 0;
   margin: 0;
@@ -830,37 +703,31 @@ body.no-scroll{overflow:hidden}
 .hero-bg > img{
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: 50% 45%;          /* Fokuspunkt – bei Bedarf anpassen */
+  object-position: 50% 45%;
   display: block;
 }
 .hero-overlay{
   position: absolute; inset: 0;
-  /* sanfte Vignette + Verlauf für Lesbarkeit */
   background:
     radial-gradient(1200px 600px at 20% 40%, rgba(0,0,0,.28), transparent 60%),
     linear-gradient(90deg, rgba(0,0,0,.38) 0%, rgba(0,0,0,.18) 35%, rgba(0,0,0,.06) 60%, rgba(0,0,0,0) 100%);
   z-index: 1;
 }
-
-/* Text-Card (Glassmorphism) */
 .hero-content{
   position: relative;
   z-index: 2;
   margin-left: max(calc(var(--bubble-size) + 28px), clamp(16px, 5vw, 64px));
   margin-right: clamp(16px, 5vw, 64px);
   padding: clamp(18px, 3vw, 28px) clamp(18px, 3vw, 32px);
-
   max-width: 760px;
   border-radius: 22px;
   color: #0f1b26;
-
   background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.55));
   border: 1px solid rgba(255,255,255,.45);
   box-shadow: 0 18px 42px rgba(0,0,0,.18), inset 0 1px 1px rgba(255,255,255,.65);
   backdrop-filter: blur(10px) saturate(160%);
   -webkit-backdrop-filter: blur(10px) saturate(160%);
 }
-
 .hero-content h1{
   margin: 0 0 .6rem 0;
   font-size: clamp(2.2rem, 4.6vw, 3.2rem);
@@ -873,14 +740,11 @@ body.no-scroll{overflow:hidden}
 .hero-cta{
   display:flex; gap:.6rem; flex-wrap:wrap; margin-top: .9rem;
 }
-
-/* Re-Use deiner Bubble-Buttons */
 .glass-bubble{
   display:inline-flex; align-items:center; justify-content:center;
   padding: 10px 16px;
   border-radius: 18px;
   text-decoration:none; font-weight:700; letter-spacing:.2px; color:#111;
-
   background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.35));
   border: 1px solid rgba(0,0,0,.08);
   box-shadow: 0 10px 26px rgba(0,0,0,.18), inset 0 1px 1px rgba(255,255,255,.65);
@@ -889,8 +753,6 @@ body.no-scroll{overflow:hidden}
   transition: transform .18s ease, box-shadow .18s ease;
 }
 .glass-bubble:hover{ transform: translateY(-1px); box-shadow: 0 14px 30px rgba(0,0,0,.2), inset 0 1px 1px rgba(255,255,255,.7); }
-
-/* Mobile: Card mittig, Abstand zur linken Logo-Bubble kleiner */
 @media (max-width: 900px){
   .hero-content{
     margin-left: clamp(12px, 4vw, 28px);
@@ -903,14 +765,9 @@ body.no-scroll{overflow:hidden}
       radial-gradient(800px 400px at 50% 10%, rgba(0,0,0,.22), transparent 60%);
   }
 }
-
-/* Sicherheitsnetz: alte Hero-Elemente ausblenden */
 #home .hero, #home .hero-img, #home .sun-hero, #home img[alt*="sonne-hero"]{
   display:none !important;
 }
-/* ================================
-   SPEISEKARTEN – Liquid Glass Tiles
-   ================================ */
 :root{
   --glass-bg-1: rgba(255,255,255,.65);
   --glass-bg-2: rgba(255,255,255,.40);
@@ -918,14 +775,12 @@ body.no-scroll{overflow:hidden}
   --glass-shadow: 0 12px 26px rgba(0,0,0,.12);
   --glass-shadow-hover: 0 18px 34px rgba(0,0,0,.16);
 }
-
 .menu-buttons{
   display: grid;
   grid-template-columns: repeat(3, minmax(220px, 1fr));
   gap: clamp(12px, 2.4vw, 22px);
   margin: clamp(12px, 2vw, 20px) 0 clamp(18px, 3vw, 32px);
 }
-
 .menu-button{
   position: relative;
   display: grid;
@@ -933,14 +788,12 @@ body.no-scroll{overflow:hidden}
   grid-template-rows: auto auto;
   align-items: center;
   gap: 8px 12px;
-
   padding: 16px 18px;
   border-radius: 18px;
   text-decoration: none;
   color: #111;
   font-weight: 700;
   letter-spacing: .2px;
-
   background: linear-gradient(180deg, var(--glass-bg-1), var(--glass-bg-2));
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow), inset 0 1px 1px rgba(255,255,255,.65);
@@ -949,15 +802,12 @@ body.no-scroll{overflow:hidden}
 
   transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
 }
-
 .menu-button:hover{
   transform: translateY(-2px);
   box-shadow: var(--glass-shadow-hover), inset 0 1px 1px rgba(255,255,255,.7);
 }
 .menu-button:active{ transform: translateY(0); }
 .menu-button:focus-visible{ outline: 2px solid rgba(0,0,0,.22); outline-offset: 3px; }
-
-/* Inhalt */
 .menu-ico{
   grid-row: 1 / span 2;
   display:grid; place-items:center;
@@ -967,14 +817,11 @@ body.no-scroll{overflow:hidden}
   background: radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.75), rgba(255,255,255,.35));
   box-shadow: inset 0 1px 1px rgba(255,255,255,.7);
 }
-
 .menu-title{
   grid-column: 2; grid-row: 1;
   font-size: clamp(1.02rem, 1.4vw, 1.1rem);
 display:grid; place-items:center;
-
 }
-
 .menu-meta{
   grid-column: 2; grid-row: 2;
   font-weight: 600;
@@ -982,7 +829,6 @@ display:grid; place-items:center;
   color: #495b68;
   opacity: .9;
 }
-
 .menu-arrow{
   grid-column: 3; grid-row: 1 / span 2;
   align-self: center;
@@ -992,15 +838,11 @@ display:grid; place-items:center;
   opacity: .8;
 }
 .menu-button:hover .menu-arrow{ translate: 4px 0; opacity: 1; }
-
-/* Prominentere Karte (z. B. Speisekarte) */
 .menu-button--primary{
   background: linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.48));
   border-color: rgba(0,0,0,.14);
   box-shadow: 0 14px 32px rgba(0,0,0,.16), inset 0 1px 1px rgba(255,255,255,.7);
 }
-
-/* Responsiv */
 @media (max-width: 980px){
   .menu-buttons{ grid-template-columns: repeat(2, minmax(220px,1fr)); }
 }
@@ -1009,7 +851,6 @@ display:grid; place-items:center;
   .menu-button{ padding: 14px 16px; }
   .menu-ico{ width: 38px; height: 38px; font-size: 20px; }
 }
-/* === FIX: Checkbox/Radio wieder sichtbar anhaken === */
 input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea{
@@ -1020,8 +861,6 @@ textarea{
   font: inherit;
   background: #fff;
 }
-
-/* Checkboxen & Radios: native Darstellung + klare Farbe */
 input[type="checkbox"],
 input[type="radio"]{
   appearance: auto;
@@ -1030,38 +869,30 @@ input[type="radio"]{
   height: 18px;
   margin-right: .5rem;
   vertical-align: middle;
-  accent-color: #111;   /* passt zum Design */
+  accent-color: #111;
   border: 0;
   padding: 0;
   background: none;
 }
-
 input[type="checkbox"]:focus-visible,
 input[type="radio"]:focus-visible{
   outline: 2px solid #e5e7eb;
   outline-offset: 2px;
 }
-
-/* Checkbox-Label sauber ausrichten (optional) */
 label.tos{
   display: flex;
   align-items: center;
   gap: .5rem;
 }
-/* Inline-Kalender im Formular */
 #date-picker .flatpickr-calendar.inline{
-  position: relative;        /* keine schwebende Box */
+  position: relative;
   width: 100%;
   max-width: none;
   border-radius: 12px;
   box-shadow: var(--shadow);
   background: #fff;
 }
-
-/* etwas softere Tagesfelder */
 #date-picker .flatpickr-day{ border-radius: 10px; }
-
-/* Mobile: Kanten definieren, Schatten dezenter */
 @media (max-width:740px){
   #date-picker .flatpickr-calendar.inline{
     box-shadow: none;
@@ -1077,11 +908,8 @@ label.tos{
   background: #fff;
 }
 #date-picker .flatpickr-day{ border-radius: 10px; }
-/* falls Flatpickr dem Hidden-Input Klassen gibt: sicher verstecken */
 #res-date,
 #res-date.flatpickr-input { display: none !important; }
-
-/* Kalender hübsch im Panel */
 #date-picker .flatpickr-calendar.inline{
   position: relative;
   width: auto;
@@ -1099,38 +927,32 @@ label.tos{
     border: 1px solid var(--border, #e5e7eb);
   }
 }
-/* Bessere Lesbarkeit für den Tagesstatus unter Step 2 */
 #day-status{
   margin-top: .35rem;
-  font-size: .95rem;           /* größer als .help */
+  font-size: .95rem;
   line-height: 1.35;
-  color: inherit;               /* nicht grau wie .help */
+  color: inherit;
 }
 #day-status .note-ok,
 #day-status .note-bad{
   display: inline-flex;
   align-items: center;
   gap: .45rem;
-  padding: .45rem .6rem;        /* „Pill“-Hintergrund */
+  padding: .45rem .6rem;
   border-radius: 10px;
   font-weight: 800;
-  font-variant-numeric: tabular-nums; /* Zeiten ruhiger */
+  font-variant-numeric: tabular-nums;
 }
-
-/* Grün: deutlich dunkler + Kontrast-Hintergrund */
 #day-status .note-ok{
-  color: #166534;                         /* dark green */
+  color: #166534;
   background: rgba(22, 101, 52, .10);
   border: 1px solid rgba(22, 101, 52, .35);
 }
-
-/* Rot: dito */
 #day-status .note-bad{
   color: #7f1d1d;
   background: rgba(239, 68, 68, .10);
   border: 1px solid rgba(239, 68, 68, .35);
 }
-/* Header vom Kalender (Monat/Jahr) klarer darstellen */
 #reserve-form .flatpickr-months{ padding: .25rem .35rem 0; }
 #reserve-form .flatpickr-current-month{
   font-size: 1.05rem;
@@ -1139,34 +961,30 @@ label.tos{
   display: flex;
   align-items: center;
   gap: .35rem;
-  justify-content: center;          /* zentriert */
+  justify-content: center;
 }
 #reserve-form .flatpickr-current-month .cur-month{
   padding: .15rem .45rem;
   border-radius: 8px;
 }
 #reserve-form .flatpickr-current-month .numInput.cur-year{
-  width: 5.2ch;                      /* genug Platz für 2025 */
+  width: 5.2ch;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: .15rem .35rem;
   font-weight: 800;
   background: #fff;
 }
-
-/* Größere, besser klickbare Pfeile */
 #reserve-form .flatpickr-prev-month,
 #reserve-form .flatpickr-next-month{
   width: 36px; height: 36px; border-radius: 10px;
 }
 #reserve-form .flatpickr-prev-month svg,
 #reserve-form .flatpickr-next-month svg{ fill: #111; }
-/* Nav als Flex-Leiste: Links = Menüpunkte, Rechts = Reservieren */
-.site-nav{ display:flex; align-items:center; width:100%; gap:.6rem; }      /* Leiste */
-.site-nav .nav{ display:flex; gap:.6rem; flex-wrap:nowrap; }               /* Menüpunkte */
-.site-nav .reserve-link{ margin-left:auto; }                               /* ganz rechts */
+.site-nav{ display:flex; align-items:center; width:100%; gap:.6rem; }      
+.site-nav .nav{ display:flex; gap:.6rem; flex-wrap:nowrap; }               
+.site-nav .reserve-link{ margin-left:auto; }                               
 .site-header .wrap{ justify-content: space-between !important; }
-/* Premium CTA oben rechts */
 .site-header .reserve-cta{
   display:inline-flex; align-items:center; justify-content:center;
   padding:10px 18px;
@@ -1177,8 +995,6 @@ label.tos{
 .site-header .wrap{ display:flex; align-items:center; justify-content:space-between; }
 .site-nav{ display:flex; gap:.6rem; align-items:center; flex-wrap:nowrap; }
 #open-reserve{ margin-left:auto; }
-
-  /* Gold-Glas Look */
   background:
     radial-gradient(120% 180% at 10% 10%, rgba(255,255,255,.85), rgba(255,255,255,.45)),
     linear-gradient(180deg, rgba(247,201,72,.45), rgba(247,201,72,.20));
@@ -1205,43 +1021,30 @@ label.tos{
     0 0 0 4px rgba(247,201,72,.35),
     inset 0 1px 1px rgba(255,255,255,.75);
 }
-
-/* kompakter auf kleineren Screens */
 @media (max-width:900px){
   .site-header .reserve-cta{ padding:8px 14px; }
 }
-/* === Reservieren: elegantes Highlight ================================== */
-/* Basis übernimmt deine vorhandene .reserve-link (Glass + Gold) */
-
-/* sanfter Shine-Sweep, nur ab und zu */
 @keyframes ctaShine {
   from { --shine-pos: -120%; }
   to   { --shine-pos: 220%; }
 }
-
-/* ruhiger Hover-„Lift“ */
 @keyframes ctaLift {
   from { transform: translateY(0); }
   to   { transform: translateY(-1px); }
 }
-
-/* Premium-Kranz: leichtes Außen-Glühen */
 .reserve-link{
   position: relative;
-  isolation: isolate; /* Shine liegt über dem Button-Inhalt */
+  isolation: isolate;
   border-radius: 999px;
   font-weight: 800;
   letter-spacing: .2px;
   outline-offset: 3px;
 }
-
-/* Shine-Layer */
 .reserve-link::after{
   content:"";
   position:absolute; inset:0;
   border-radius: inherit;
   pointer-events:none;
-  /* dezente diagonale Glanzbahn */
   background:
     linear-gradient(75deg,
       transparent 0,
@@ -1252,11 +1055,8 @@ label.tos{
   opacity:.85;
   mix-blend-mode: screen;
   filter: blur(.2px);
-  /* Animation wird per JS nur gelegentlich getriggert */
   animation: none;
 }
-
-/* Fokus gut sichtbar – barrierefrei */
 .reserve-link:focus-visible{
   outline: 3px solid rgba(247,201,72,.55);
   box-shadow:
@@ -1264,14 +1064,10 @@ label.tos{
     0 12px 28px rgba(0,0,0,.20),
     inset 0 1px 1px rgba(255,255,255,.75);
 }
-
-/* Hover: ganz leicht anheben (nimmt vorhandene Optik auf) */
 .reserve-link:hover{
   animation: ctaLift .18s ease forwards;
   filter: brightness(1.03);
 }
-
-/* „dezent wichtiger“: kleine Badge rechts oben (optional) */
 .reserve-link[data-badge]::before{
   content: attr(data-badge);
   position: absolute;
@@ -1286,93 +1082,59 @@ label.tos{
   border:1px solid rgba(247,201,72,.6);
   box-shadow: 0 8px 18px rgba(0,0,0,.18), inset 0 1px 1px rgba(255,255,255,.75);
 }
-
-/* wenn das Dialog offen ist, Button „ruhig“ stellen */
 :has(#reserve-modal[open]) #open-reserve::after { animation: none !important; }
-
-/* Respektiere reduced motion */
 @media (prefers-reduced-motion: reduce){
   .reserve-link:hover{ animation: none; }
   .reserve-link::after{ animation: none !important; }
 }
-/* Platz für die Bottom-Bar schaffen (nur sehr kleine Screens) */
 @media (max-width: 740px){
   body{ padding-bottom: calc(64px + var(--safe-bottom)); }
 }
-
-/* Accessibility: Animationen reduzieren, wenn gewünscht */
 @media (prefers-reduced-motion: reduce){
   *{ animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
-/* === Logo im Nav-Reiter ======================================= */
-/* Basis übernimmt .glass-bubble (dein Liquid-Glass-Style) */
 .nav-logo { list-style: none; }
-
-/* quadratische Logo-„Tab“-Bubble */
 .logo-tab{
-  padding: 6px;                  /* kompakter als Text-Tabs */
+  padding: 6px;               
   aspect-ratio: 1 / 1;
   width: clamp(36px, 5.2vw, 46px);
-  border-radius: 14px;           /* etwas runder für Logo */
+  border-radius: 14px;          
 }
-
-/* Logo-Bild sauber einpassen */
 .logo-tab img{
   display:block;
   width: 100%;
   height: 100%;
-  object-fit: contain;           /* nichts abschneiden */
-  border-radius: 8px;            /* minimale Abrundung im Bubble-Rahmen */
+  object-fit: contain;
+  border-radius: 8px;
   image-rendering: -webkit-optimize-contrast;
 }
-
-/* Hover/Focus ruhig halten (kein „Lift“ nötig) */
 .logo-tab:hover{ transform:none; box-shadow: 0 6px 16px rgba(0,0,0,.12), inset 0 1px 1px rgba(255,255,255,.6); }
 .logo-tab:focus-visible{ outline: 2px solid rgba(0,0,0,.15); outline-offset: 2px; }
-
-/* Mobile etwas kleiner, damit die Reihe nicht bricht */
 @media (max-width: 900px){
   .logo-tab{ width: clamp(32px, 7vw, 40px); padding: 5px; border-radius: 12px; }
 }
-
-/* ==== Altes Layout (Floating Bubble) neutralisieren ========= */
-/* Links war Platz für die schwebende Logo-Bubble reserviert – entfernen */
 .site-header .wrap{
-  padding-left: 0 !important;            /* war: calc(var(--bubble-size) + …) */
+  padding-left: 0 !important;          
   justify-content: space-between !important;
 }
-
-/* Fallback: falls irgendwo .site-header .brand gezielt ausgeblendet wurde, wieder zulassen (optional) */
-/* .site-header .brand{ display:flex !important; visibility:visible !important; } */
-/* === LOGO IM NAV-REITER (größer & responsiv) ================== */
 .nav-logo{ list-style:none }
-
-/* der Logo-Tab – spürbar größer als Text-Tabs */
 .logo-tab{
-  padding: 8px;                   /* mehr Innenabstand fürs Bild */
-  width: clamp(56px, 7.5vw, 88px);/* ← hier stellst du „groß“ ein */
+  padding: 8px;                  
+  width: clamp(56px, 7.5vw, 88px);
   aspect-ratio: 1/1;
   border-radius: 16px;
 }
 .logo-tab img{
   width:100%; height:100%; display:block; object-fit:contain; border-radius:10px;
 }
-
-/* auf sehr kleinen Screens etwas kompakter */
 @media (max-width:740px){
   .logo-tab{ width: clamp(48px, 10vw, 64px); padding: 6px; border-radius:14px; }
 }
-
-/* === FLOATING-LOGO deaktivieren & altes Layout aufräumen ====== */
-/* Floating-Bubble komplett verstecken (war links oben fix) */
-.logo-bubble{ display:none !important; } /* war: fixed links oben. */  /* :contentReference[oaicite:2]{index=2} */
-
-/* Links reservierten Platz durch die alte Bubble entfernen */
+.logo-bubble{ display:none !important; } 
 .site-header .wrap{
-  padding-left: 0 !important;                 /* vorher calc(var(--bubble-size)+…) */ /* :contentReference[oaicite:3]{index=3} */
+  padding-left: 0 !important;            
   justify-content: space-between !important;
 }
-/* === Logo nur als Bild in der Nav (ohne Bubble) =================== */
 .nav-logo{ display:flex; align-items:center; }
 
 .logo-link{
@@ -1382,65 +1144,43 @@ label.tos{
   box-shadow:none !important;
   border:none !important;
   padding:0 !important;
-  margin-right: 10px;          /* etwas Abstand zum ersten Reiter */
-  transform:none !important;   /* ggf. vorhandene Hover-Lifts neutralisieren */
+  margin-right: 10px;        
+  transform:none !important;   
 }
 .logo-link:hover{ filter:none; }
 .logo-link:focus-visible{
-  outline: 2px solid rgba(0,0,0,.18); /* dezenter Fokusrahmen */
+  outline: 2px solid rgba(0,0,0,.18); 
   outline-offset: 2px;
 }
-
-/* Bildhöhe = Reiterhöhe (visuell), Breite automatisch */
 .logo-link img{
   display:block;
-  height: clamp(28px, 4.2vw, 40px);   /* <- bei Bedarf hier anpassen */
+  height: clamp(28px, 4.2vw, 40px);
   width:auto;
   object-fit: contain;
 }
-
-/* Mobile etwas kleiner, damit die Zeile nicht bricht */
 @media (max-width: 740px){
   .logo-link img{ height: clamp(24px, 6vw, 34px); }
 }
-
-/* falls noch die alte „floating“ .logo-bubble existiert: ausblenden */
 .logo-bubble{ display:none !important; }
-/* Sagt dem Browser: beim Scrollen zu #IDs bitte diesen Abstand freilassen */
 html{
   scroll-behavior: smooth;
-  /* Fallback-Wert, wird von JS gleich exakt gesetzt */
   --header-h: 96px;
   scroll-padding-top: var(--header-h);
 }
-
-/* Extra-Schutz: jedes Element mit ID bekommt denselben Offset */
 [id]{ scroll-margin-top: var(--header-h); }
-/* Basis: verhindere, dass Tabs auf eine einzige Letter „zerquetscht“ werden */
 .nav a{ white-space: nowrap; }
-
-/* Ab hier: Mobil-Navigation zusammenklappen */
 @media (max-width: 820px){
-  /* Nur Logo + Burger zeigen */
-  .nav > li{ display:none; }                 /* alles aus … */
+  .nav > li{ display:none; }              
   .nav > li.nav-logo,
-  .nav > li.nav-menu{ display:flex; }        /* … außer Logo + Menü */
-
-  /* Logo-Größe ohne Bubble */
+  .nav > li.nav-menu{ display:flex; }       
   .logo-link img{
     height: clamp(26px, 6.2vw, 34px);
     width: auto; display:block; object-fit: contain;
   }
-
-  /* rechter Header-CTA (falls vorhanden) ausblenden – unten gibts die Bar */
   .site-header .reserve-link,
   .site-header [data-badge]{ display:none !important; }
-
-  /* Kanten: genug Abstand zwischen Logo und Burger */
   .nav{ gap: 10px; }
 }
-
-/* Optional: Badge „Neu“ mobil ausblenden, damit nichts überlappt */
 @media (max-width: 820px){
   .reserve-link[data-badge]::before{ display:none; }
 }
@@ -1461,28 +1201,21 @@ html{
 }
 .drawer.open{ transform:translateX(0); }
 .drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; }
-/* Nur die Header-Navigation einklappen, nicht den Drawer */
 @media (max-width:980px){
-  .site-nav > ul{ display:none; }              /* war: nav ul */
-  .icon-btn{ display:inline-flex; }            /* Burger einblenden */
+  .site-nav > ul{ display:none; }            
+  .icon-btn{ display:inline-flex; }           
 }
-
-/* Drawer-UL explizit zulassen (falls ältere Regel cached ist) */
 .drawer .mobile-nav{ display:block !important; }
 :root{
-  --safe-top: env(safe-area-inset-top, 0px); /* iOS-Notch etc. */
-  --anchor-extra: 34px;                      /* kleine Luft Desktop */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --anchor-extra: 34px;
 }
 @media (max-width: 820px){
-  :root{ --anchor-extra: 37px; }             /* etwas mehr Luft mobil */
+  :root{ --anchor-extra: 37px; }
 }
-
-/* Browser-Standard bei Ankersprüngen + Fallback pro Element */
 html{ scroll-padding-top: var(--header-h, 0px); }
 [id]{ scroll-margin-top: var(--header-h, 0px); }
-/* ==== Mobile-Optimierung für den Reservierungs-Wizard ==================== */
 @media (max-width: 820px){
-  /* Dialog randlos & volle Höhe (mit Safe Areas) */
   dialog#reserve-modal{ width:100vw; max-width:none; }
   .glass-card{
     margin: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
@@ -1491,40 +1224,30 @@ html{ scroll-padding-top: var(--header-h, 0px); }
     display: flex; flex-direction: column;
     height: calc(100dvh - (max(8px, env(safe-area-inset-top)) + max(8px, env(safe-area-inset-bottom))));
   }
-
-  /* Header fixieren */
-  .glass-card .reserve-head{           /* vorhandene Klasse verwenden */
+  .glass-card .reserve-head{        
     position: sticky; top: 0; z-index: 2; 
     border-top-left-radius: 18px; border-top-right-radius: 18px;
     backdrop-filter: blur(6px) saturate(140%);
   }
-
-  /* Stepper unter dem Header fixieren */
   .wizard-steps{
     position: sticky;
-    top: var(--reserve-head-h, 56px);  /* Höhe setzen wir unten per JS */
+    top: var(--reserve-head-h, 56px);  
     z-index: 1;
     margin: 0; padding: .5rem 1rem;
     background: linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,.12));
     backdrop-filter: blur(6px) saturate(140%);
   }
   .wizard-steps .step-dot{ width:28px; height:28px; font-size:.95rem; }
-
-  /* Inhalt scrollt – mit Platz für die Sticky-Buttons am Fuß */
   .glass-card .reserve-body{ 
     overflow: auto; 
     padding: .75rem 1rem calc(1rem + env(safe-area-inset-bottom));
   }
-
-  /* Titel + Grids kompakter */
   .section-title{ font-size: clamp(1.05rem, 4.6vw, 1.25rem); margin:.25rem 0 .25rem; }
-  .reserve-grid{ grid-template-columns: 1fr !important; gap: .8rem; } /* einkolumnig */  /* 0 */
-  input,select,textarea{ font-size:16px; } /* iOS-Zoom verhindern */  /* 1 */
-
-  /* Sticky Action-Bar unten im Dialog */
+  .reserve-grid{ grid-template-columns: 1fr !important; gap: .8rem; }
+  input,select,textarea{ font-size:16px; } 
   .step-panel .nav-row{
     position: sticky; bottom: 0; z-index: 3;
-    margin: 0 -1rem -1rem;               /* über die Card-Kante ziehen */
+    margin: 0 -1rem -1rem;
     padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
     background:
       linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.75) 45%, rgba(255,255,255,.95));
@@ -1533,24 +1256,16 @@ html{ scroll-padding-top: var(--header-h, 0px); }
     justify-content: space-between;
   }
   .step-panel .nav-row .cta{ min-height: 44px; }
-  .step-panel .nav-row .cta:not(.secondary){ flex:1; } /* „Weiter“ schön breit */
+  .step-panel .nav-row .cta:not(.secondary){ flex:1; }
   .step-panel .nav-row .cta.secondary{ flex:0 0 auto; }
-
-  /* Übersicht (Step 5) – Spalten enger & Umbrüche erlauben */
   .summary-card{ font-size: .95rem; }
-  .summary-card dl{ grid-template-columns: 96px 1fr; word-break: break-word; } /* 2 */
-
-  /* Flatpickr optisch anpassen, volle Breite */
-  #reserve-form .flatpickr-calendar{ width:100%; box-shadow:none; }         /* 3 */
+  .summary-card dl{ grid-template-columns: 96px 1fr; word-break: break-word; }
+  #reserve-form .flatpickr-calendar{ width:100%; box-shadow:none; }
   #reserve-form .flatpickr-months .flatpickr-prev-month,
   #reserve-form .flatpickr-months .flatpickr-next-month{ width:38px; height:38px; }
 }
-
-/* Buttons im Wizard: deaktiviert gut sichtbar */
 .cta[disabled]{ opacity:.5; pointer-events:none; }
-/* --- Mobile: Platz für Stepper oben & Button-Leiste unten --- */
 @media (max-width:820px){
-  /* Stepper bleibt kleben */
   .wizard-steps{
     position: sticky;
     top: -20px;
@@ -1564,21 +1279,17 @@ html{ scroll-padding-top: var(--header-h, 0px); }
     border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
   }
   .wizard-steps .step-dot{ width:28px; height:28px; flex:0 0 28px; }
-
-  /* nur der Body scrollt – mit dynamischem Abstand oben/unten */
   .glass-card{ display:flex; flex-direction:column; }
   .glass-card .reserve-body{
     overflow:auto;
     padding-top: calc(var(--steps-h, 100px) + 10px) !important;
     padding-bottom: calc(var(--footer-h, 64px) + env(safe-area-inset-bottom) + 10px) !important;
   }
-
-  /* Untere Button-Leiste klebt (und hat definierte Mindesthöhe) */
   .step-panel .nav-row{
     position: sticky; bottom: 0; z-index: 4;
     min-height: 56px;
     gap: 12px; padding: 10px 12px;
-    margin: 0 -12px 0px; /* darf über die Card rausziehen */
+    margin: 0 -12px 0px;
     background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.85) 45%, rgba(255,255,255,.95));
     backdrop-filter: blur(8px) saturate(140%);
     border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
@@ -1586,11 +1297,8 @@ html{ scroll-padding-top: var(--header-h, 0px); }
   .step-panel .nav-row .cta{ min-height: 44px; }
   .step-panel .nav-row .cta:not(.secondary){ flex:1; }
   .step-panel .nav-row .cta.secondary{ flex:0 0 auto; }
-
-  /* iOS-Zoom verhindern, Felder kompakter */
   input, select, textarea{ font-size:16px; }
 }
-
   </style>
 </head>
 <body>

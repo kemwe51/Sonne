@@ -1341,6 +1341,34 @@ html{
 
 /* Extra-Schutz: jedes Element mit ID bekommt denselben Offset */
 [id]{ scroll-margin-top: var(--header-h); }
+/* Basis: verhindere, dass Tabs auf eine einzige Letter „zerquetscht“ werden */
+.nav a{ white-space: nowrap; }
+
+/* Ab hier: Mobil-Navigation zusammenklappen */
+@media (max-width: 820px){
+  /* Nur Logo + Burger zeigen */
+  .nav > li{ display:none; }                 /* alles aus … */
+  .nav > li.nav-logo,
+  .nav > li.nav-menu{ display:flex; }        /* … außer Logo + Menü */
+
+  /* Logo-Größe ohne Bubble */
+  .logo-link img{
+    height: clamp(26px, 6.2vw, 34px);
+    width: auto; display:block; object-fit: contain;
+  }
+
+  /* rechter Header-CTA (falls vorhanden) ausblenden – unten gibts die Bar */
+  .site-header .reserve-link,
+  .site-header [data-badge]{ display:none !important; }
+
+  /* Kanten: genug Abstand zwischen Logo und Burger */
+  .nav{ gap: 10px; }
+}
+
+/* Optional: Badge „Neu“ mobil ausblenden, damit nichts überlappt */
+@media (max-width: 820px){
+  .reserve-link[data-badge]::before{ display:none; }
+}
 
   </style>
 </head>
@@ -1349,33 +1377,23 @@ html{
   <header>
     <div class="wrap sitebar" role="navigation" aria-label="Hauptnavigation">
           <nav class="site-nav">
-  <ul class="nav">
-<li class="nav-logo">
-  <a href="#home" class="logo-link" aria-label="Startseite">
-    <img src="logo-restaurant-sonne.png" alt="Restaurant Sonne">
-  </a>
-</li>
+ <ul class="nav">
+  <li class="nav-logo">
+    <a href="#home" class="logo-link" aria-label="Startseite">
+      <img src="logo-restaurant-sonne.png" alt="Restaurant Sonne">
+    </a>
+  </li>
 
-    <li><a href="#speisekarten" class="glass-bubble">Speisekarten</a></li>
-    <li><a href="#galerie"    class="glass-bubble">Galerie</a></li>
-    <li><a href="#kontakt"    class="glass-bubble">Kontakt</a></li>
-  </ul>
-<!-- Menü-Button (wird nur auf Mobil sichtbar) -->
-<button
-  id="open-drawer"
-  class="icon-btn"
-  aria-label="Menü öffnen"
-  aria-controls="mobile-drawer"
-  aria-expanded="false">☰</button>
+  <!-- … deine normalen Tabs … -->
+  <li><a href="#speisekarten">Speisekarten</a></li>
+  <li><a href="#galerie">Galerie</a></li>
+  <li><a href="#kontakt">Kontakt</a></li>
 
-<button id="open-reserve"
-  type="button"
-  class="glass-bubble reserve-link"
-  data-badge="Neu"
-  aria-haspopup="dialog"
-  aria-controls="reserve-modal">
-  Reservieren
-</button>
+  <!-- Burger als eigenes Listenelement -->
+  <li class="nav-menu">
+    <button id="open-drawer" class="icon-btn" aria-label="Menü öffnen">☰</button>
+  </li>
+</ul>
 
 
 </nav>

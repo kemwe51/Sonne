@@ -7,8 +7,8 @@
   <meta name="format-detection" content="telephone=yes">
   <meta name="theme-color" content="#F7C948">
 
-  <title>Restaurant Sonne Kölliken – Familienfreundliches Restaurant | Cordon bleu, Burger & Schweizer Küche</title>
-  <meta name="description" content="Das familienfreundliche Restaurant Sonne in Kölliken: grosse Cordon bleus, saftige Burger & gut bürgerliche Schweizer Küche. Kinderecke, Hochstühle & Terrasse. Jetzt online reservieren.">
+  <title>Sonne Kölliken</title>
+  <meta name="description" content="Das familienfreundliche Restaurant Sonne in Kölliken: grosse Cordon bleus & gut bürgerliche Schweizer Küche. Kinderecke, Hochstühle & Terrasse. Jetzt online reservieren.">
   <meta name="robots" content="index, follow">
 
   <!-- Canonical & hreflang -->
@@ -1596,16 +1596,29 @@ reserveModal.addEventListener('click', (e) => {
       }else{
         statusEl.innerHTML = `<span class="note-ok">Geöffnet am ${nice}: ${fmtRanges(ranges)}</span>`;
         resDate.classList.remove('is-closed');
-        const slots = genSlots(ranges);
-        if(!slots.length){
-          const opt = new Option('Keine Zeiten verfügbar', '');
-          opt.disabled = true; opt.selected = true;
-          resTime.add(opt);
-        }else{
-          resTime.add(new Option('Uhrzeit wählen', '', true, true));
-          resTime.options[0].disabled = true;
-          slots.forEach(t => resTime.add(new Option(t, t)));
-        }
+// Slots generieren
+let slots = genSlots(ranges);
+
+// HEUTE: vergangene Zeiten gar nicht anzeigen
+const todayIso = new Date().toISOString().slice(0,10);
+if (dateStr === todayIso){
+  const nowHM = new Date().toTimeString().slice(0,5); // "HH:MM"
+  slots = slots.filter(t => t > nowHM);               // <— nur zukünftige Zeiten
+}
+
+// Dropdown neu füllen
+resTime.length = 0;
+if(!slots.length){
+  const opt = new Option('Heute keine Zeiten mehr verfügbar', '');
+  opt.disabled = true; opt.selected = true;
+  resTime.add(opt);
+}else{
+  resTime.add(new Option('Uhrzeit wählen', '', true, true));
+  resTime.options[0].disabled = true;
+  slots.forEach(t => resTime.add(new Option(t, t)));
+}
+
+
       }
 
       // Legende mit Selektion neu zeichnen
